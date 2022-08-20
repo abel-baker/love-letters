@@ -4,7 +4,10 @@
   "description": "Discord bot to play Love Letter with your friends",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "npx nodemon",
+    "commands": "node deploy-commands.js",
+    "deregister": "node deregister-commands.js"
   },
   "repository": {
     "type": "git",
@@ -23,7 +26,11 @@
   },
   "homepage": "https://github.com/abel-baker/love-letters#readme",
   "dependencies": {
+    "@discordjs/rest": "^1.0.1",
     "discord.js": "^14.2.0",
     "dotenv": "^16.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
   }
 }
