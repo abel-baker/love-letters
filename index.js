@@ -1,8 +1,9 @@
 require('dotenv').config({ path: '.env' });
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, Collection, GatewayIntentBits, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const TOKEN = process.env.TOKEN;
+const { Client, Collection, GatewayIntentBits } = require('discord.js');
+const Game = require('./classes/Game');
 
 // Client instance
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
@@ -33,10 +34,8 @@ for (const file of eventFiles) {
   }
 }
 
-// When client is ready, run this code ones
-// client.once('ready', () => {
-//   console.log('Ready!');
-// });
+// Instantiate game
+client.game = new Game();
 
 client.on('interactionCreate', async interaction => {
   if (!interaction.isChatInputCommand()) return;
