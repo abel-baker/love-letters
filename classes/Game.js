@@ -1,9 +1,12 @@
 const Player = require('./Player');
+const Deck = require('./Deck');
 
 class Game {
   constructor(config) {
     this.status = 'inactive';
     this.players = new Map();
+
+    const deck = new Deck();
   }
 
   new() {
