@@ -1,0 +1,252 @@
+{
+	"prefix": "!",
+	"embed_color": 13632088,
+	"embed_color_draw": 10726059,
+
+	"bot_avatar_url" : "https://cdn.discordapp.com/avatars/596154206432264203/5ea9563762981dac308059108ce734fd.png",
+
+	"rules": {
+		"set_aside_elijah_on_two_players": true,
+		"limit_hand_size": true,
+		"allow_duel_omit_target": true,
+
+		"last_turn_prince_forces_draw_elijah": true,
+		"allow_play_on_handmaided": true,
+		"allow_play_on_self": false
+	},
+
+	"cards": {
+		"princess": {
+			"value":	8,
+			"deck_quantity":	1,
+			"label": 	":eight::princess:",
+			"hidden":	"||:eight::princess:||",
+			"emoji":	"👸",
+			"article":	"the",
+			"name":		"princess",
+			"rules":	"Lose the game if you discard this card.",
+
+			"requires_target":	false,
+			"requires_token":	false,
+
+			"play_on_discard":	true,
+			"provides_protection":	true,
+			"plays_nice": true,
+			"tolerates_nonsense": true,
+
+			"allow_play_without_card_in_hand": false,
+			"allow_play_without_active_game": false,
+			"add_to_history": true,
+
+			"play_description":	"{player} discards the princess.",
+			"play_actions":	[ "forfeit-hand" ]
+		},
+		"countess": {
+			"value":	7,
+			"deck_quantity":	1,
+			"label": 	":seven::woman:",
+			"hidden":	"||:seven::woman:||",
+			"emoji":	"👩",
+			"article":	"the",
+			"name":		"countess",
+			"rules":	"If you have this card and either the king or the prince, you must discard this card.",
+
+			"requires_target":	false,
+			"requires_token":	false,
+
+			"play_on_discard":	false,
+			"provides_protection":	false,
+			"plays_nice": true,
+			"tolerates_nonsense": false,
+
+			"allow_play_without_card_in_hand": false,
+			"allow_play_without_active_game": false,
+			"add_to_history": true,
+
+			"play_description":	"{player} discards the countess.",
+			"play_actions": [ ]
+		},
+		"king": {
+			"value":	6,
+			"deck_quantity":	1,
+			"label": 	":six::lion:",
+			"hidden":	"||:six::lion:||",
+			"emoji":	"🦁",
+			"article":	"the",
+			"name":		"king",
+			"rules":	"Trade hands with another player.",
+
+			"requires_target":	true,
+			"requires_token":	false,
+
+			"play_on_discard":	false,
+			"provides_protection":	false,
+			"plays_nice": false,
+			"tolerates_nonsense": true,
+
+			"allow_play_without_card_in_hand": false,
+			"allow_play_without_active_game": false,
+			"add_to_history": true,
+			
+			"play_description":	"{player} trades hands with {@target}.",
+			"play_actions": [ "blank", "trade-hands" ]
+		},
+		"prince": {
+			"value":	5,
+			"deck_quantity":	2,
+			"label": 	":five::prince:",
+			"hidden":	"||:five::prince:||",
+			"emoji":	"🤴",
+			"article":	"a",
+			"name":		"prince",
+			"rules":	"Force another player to discard their hand and draw a new card.",
+
+			"requires_target":	true,
+			"requires_token":	false,
+
+			"play_on_discard":	false,
+			"provides_protection":	false,
+			"plays_nice": false,
+			"tolerates_nonsense": true,
+
+			"allow_play_without_card_in_hand": false,
+			"allow_play_without_active_game": false,
+			"add_to_history": true,
+
+			"play_description":	"{player} forces {@target} to discard their hand and draw a new card.",
+			"play_actions": [ "blank", "show-and-discard-target-hand", "target-draw", "show-target-hand" ]
+		},
+		"handmaid": {
+			"value":	4,
+			"deck_quantity":	2,
+			"label": 	":four::girl:",
+			"hidden":	"||:four::girl:||",
+			"emoji":	"👧",
+			"article":	"a",
+			"name":		"handmaid",
+			"rules":	"You will not be affected by any card played against you until your next turn.",
+
+			"requires_target":	false,
+			"requires_token":	false,
+
+			"play_on_discard":	false,
+			"provides_protection":	true,
+			"protection_message":	"{@target} has the protection of a handmaid.",
+
+
+			"plays_nice": true,
+			"tolerates_nonsense": true,
+
+			"allow_play_without_card_in_hand": false,
+			"allow_play_without_active_game": false,
+			"add_to_history": true,
+
+			"play_description":	"{player} will not be affected by any card until their next turn.",
+			"play_actions": [ ]
+		},
+		"baron": {
+			"value":	3,
+			"deck_quantity":	2,
+			"label": 	":three::man:",
+			"hidden":	"||:three::man:||",
+			"emoji":	"👨",
+			"article":	"a",
+			"name":		"baron",
+			"rules":	"Compare your hand with another player.  The player with the lower hand loses.",
+
+			"requires_target":	true,
+			"requires_token":	false,
+
+			"play_on_discard":	false,
+			"provides_protection":	false,
+			"plays_nice": true,
+			"tolerates_nonsense": true,
+
+			"allow_play_without_card_in_hand": false,
+			"allow_play_without_active_game": false,
+			"add_to_history": true,
+
+			"play_description":	"{player} challenges {@target} to compare cards.",
+			"play_actions": [ "show-hand", "show-target-hand", "compare-hands" ]
+		},
+		"priest": {
+			"value":	2,
+			"deck_quantity":	2,
+			"label": 	":two::older_man:",
+			"hidden":	"||:two::older_man:||",
+			"emoji":	"👴",
+			"article":	"a",
+			"name":		"priest",
+			"rules":	"Look at another player's hand.",
+
+			"requires_target":	true,
+			"requires_token":	false,
+
+			"play_on_discard":	false,
+			"provides_protection":	false,
+			"plays_nice": true,
+			"tolerates_nonsense": true,
+
+			"allow_play_without_card_in_hand": false,
+			"allow_play_without_active_game": false,
+			"add_to_history": true,
+
+			"play_description":	"{player} looks at {@target}'s hand.",
+			"play_actions": [ "show-target-hand" ]
+		},
+		"guard": {
+			"value":	1,
+			"deck_quantity":	5,
+			"label": 	":one::guardsman:",
+			"hidden":	"||:one::guardsman:||",
+			"emoji":	"💂",
+			"article":	"a",
+			"name":		"guard",
+			"rules":	"Accuse a player of holding a card, besides guard.  If they are holding that card, they lose.",
+
+			"requires_target":	true,
+			"requires_token":	true,
+
+			"no_token_message": "Name another card in order to play this one, {@player}.",
+			"disallowed_card_tokens":	[ "guard", "knave" ],
+			"disallowed_card_message":	"A guard cannot be played on that card, {@player}.",
+
+			"play_on_discard":	false,
+			"provides_protection":	false,
+			"plays_nice": true,
+			"tolerates_nonsense": true,
+
+			"allow_play_without_card_in_hand": false,
+			"allow_play_without_active_game": false,
+			"add_to_history": true,
+
+			"play_description":	"{player} accuses {@target} of holding {card-article} {card-name}.",
+			"play_actions": [ "seek-target-card" ]
+		},
+		"knave": {
+			"value":	0,
+			"deck_quantity":	0,
+			"label": 	":zero::liar:",
+			"hidden":	"||:zero::liar:||",
+			"emoji":	"🤥",
+			"article":	"a",
+			"name":		"knave",
+			"rules":	"Accuse another player of being a lying knave.",
+
+			"requires_target":	true,
+			"requires_token":	false,
+
+			"play_on_discard":	false,
+			"provides_protection":	false,
+			"plays_nice": true,
+			"tolerates_nonsense": true,
+
+			"allow_play_without_card_in_hand": true,
+			"allow_play_without_active_game": true,
+			"add_to_history": false,
+
+			"play_description":	"{player} accuses {@target} of being a lying knave.",
+			"play_actions": [ "accuse-of-knavedom" ]
+		}
+	}
+}
