@@ -18,12 +18,12 @@ class Game {
   join(member) {
     if (this.players.has(member)) return false;
 
-    this.players.add(member);
+    this.players.set(member, new Player(member));
     return true;
   }
 
   playing() {
-    return [...this.players].map(player => player.getDisplayName()).join(',');
+    return [...this.players.values()].map(player => player.getDisplayName()).join(',');
     // return this.players;
   }
 
