@@ -3,22 +3,36 @@ const Deck = require('./Deck');
 
 class Game {
   constructor(config) {
-    this.status = 'inactive';
+    this.config = config;
 
-    this.players = new Map();
-    this.queueJoin = new Set();
-    this.queueLaeve = new Set();
-
-    this.deck = new Deck([]);
-    this.aside = new Deck([]);
-    this.faceup = new Deck([]);
-    
-    this.history = new Set();
+    this.new();
   }
 
   new() {
     this.status = 'inactive';
+
+    // map GuildMember -> Player
     this.players = new Map();
+
+    // set of GuildMember to add/create (map) or remove
+    this.queueJoin = new Set();
+    this.queueLaeve = new Set();
+
+    this.reset();
+  }
+
+  // Resets decks, play history, and Player hands
+  reset() {
+    this.deck = new Deck([]);
+    this.aside = new Deck([]);
+    this.faceup = new Deck([]);
+
+    // Iterate through Players and clear their hands
+    for (const member of this.players) {
+      this.players.get(member).clearHand();
+    }
+
+    this.history = new Set();
   }
 
   start() {

@@ -7,12 +7,16 @@ class Player {
 
     this.eliminated = false;
     this.score = 0;
-    this.hand = new Deck();
+    this.hand = new Deck([]);
     this.history = new Array();
   }
 
   getDisplayName() {
     return this.member.displayName;
+  }
+
+  clearHand() {
+    this.hand = new Deck([]);
   }
 }
 
