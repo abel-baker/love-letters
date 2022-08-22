@@ -1,5 +1,6 @@
 const Player = require('./Player');
 const Deck = require('./Deck');
+const { Card, Cards } = require('./Card');
 
 class Game {
   constructor(config) {
@@ -23,9 +24,11 @@ class Game {
 
   // Resets decks, play history, and Player hands
   reset() {
-    this.deck = new Deck([]);
+    this.deck = new Deck();
     this.aside = new Deck([]);
     this.faceup = new Deck([]);
+
+    console.log(this.deck);
 
     // Iterate through Players and clear their hands
     for (const member of this.players) {

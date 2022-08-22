@@ -1,5 +1,7 @@
+const { Card, Cards } = require('./Card');
+
 class Deck extends Array {
-  constructor(source = ["fourth", "fifth", "sixth", "sixth"]) {
+  constructor(source = [Cards.PRINCESS, Cards.COUNTESS, Cards.PRINCE]) {
     super(...source);
   }
 
