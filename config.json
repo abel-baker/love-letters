@@ -6,11 +6,11 @@
 	"bot_avatar_url" : "https://cdn.discordapp.com/avatars/596154206432264203/5ea9563762981dac308059108ce734fd.png",
 
 	"rules": {
-		"set_aside_elijah_on_two_players": true,
+		"set_aside_on_two_players": true,
 		"limit_hand_size": true,
 		"allow_duel_omit_target": true,
 
-		"last_turn_prince_forces_draw_elijah": true,
+		"last_turn_prince_forces_draw_aside": true,
 		"allow_play_on_handmaided": true,
 		"allow_play_on_self": false
 	},
@@ -34,10 +34,6 @@
 			"plays_nice": true,
 			"tolerates_nonsense": true,
 
-			"allow_play_without_card_in_hand": false,
-			"allow_play_without_active_game": false,
-			"add_to_history": true,
-
 			"play_description":	"{player} discards the princess.",
 			"play_actions":	[ "forfeit-hand" ]
 		},
@@ -59,10 +55,6 @@
 			"plays_nice": true,
 			"tolerates_nonsense": false,
 
-			"allow_play_without_card_in_hand": false,
-			"allow_play_without_active_game": false,
-			"add_to_history": true,
-
 			"play_description":	"{player} discards the countess.",
 			"play_actions": [ ]
 		},
@@ -83,10 +75,6 @@
 			"provides_protection":	false,
 			"plays_nice": false,
 			"tolerates_nonsense": true,
-
-			"allow_play_without_card_in_hand": false,
-			"allow_play_without_active_game": false,
-			"add_to_history": true,
 			
 			"play_description":	"{player} trades hands with {@target}.",
 			"play_actions": [ "blank", "trade-hands" ]
@@ -109,10 +97,6 @@
 			"plays_nice": false,
 			"tolerates_nonsense": true,
 
-			"allow_play_without_card_in_hand": false,
-			"allow_play_without_active_game": false,
-			"add_to_history": true,
-
 			"play_description":	"{player} forces {@target} to discard their hand and draw a new card.",
 			"play_actions": [ "blank", "show-and-discard-target-hand", "target-draw", "show-target-hand" ]
 		},
@@ -133,13 +117,8 @@
 			"provides_protection":	true,
 			"protection_message":	"{@target} has the protection of a handmaid.",
 
-
 			"plays_nice": true,
 			"tolerates_nonsense": true,
-
-			"allow_play_without_card_in_hand": false,
-			"allow_play_without_active_game": false,
-			"add_to_history": true,
 
 			"play_description":	"{player} will not be affected by any card until their next turn.",
 			"play_actions": [ ]
@@ -162,10 +141,6 @@
 			"plays_nice": true,
 			"tolerates_nonsense": true,
 
-			"allow_play_without_card_in_hand": false,
-			"allow_play_without_active_game": false,
-			"add_to_history": true,
-
 			"play_description":	"{player} challenges {@target} to compare cards.",
 			"play_actions": [ "show-hand", "show-target-hand", "compare-hands" ]
 		},
@@ -186,10 +161,6 @@
 			"provides_protection":	false,
 			"plays_nice": true,
 			"tolerates_nonsense": true,
-
-			"allow_play_without_card_in_hand": false,
-			"allow_play_without_active_game": false,
-			"add_to_history": true,
 
 			"play_description":	"{player} looks at {@target}'s hand.",
 			"play_actions": [ "show-target-hand" ]
@@ -216,37 +187,8 @@
 			"plays_nice": true,
 			"tolerates_nonsense": true,
 
-			"allow_play_without_card_in_hand": false,
-			"allow_play_without_active_game": false,
-			"add_to_history": true,
-
 			"play_description":	"{player} accuses {@target} of holding {card-article} {card-name}.",
 			"play_actions": [ "seek-target-card" ]
-		},
-		"knave": {
-			"value":	0,
-			"deck_quantity":	0,
-			"label": 	":zero::liar:",
-			"hidden":	"||:zero::liar:||",
-			"emoji":	"🤥",
-			"article":	"a",
-			"name":		"knave",
-			"rules":	"Accuse another player of being a lying knave.",
-
-			"requires_target":	true,
-			"requires_token":	false,
-
-			"play_on_discard":	false,
-			"provides_protection":	false,
-			"plays_nice": true,
-			"tolerates_nonsense": true,
-
-			"allow_play_without_card_in_hand": true,
-			"allow_play_without_active_game": true,
-			"add_to_history": false,
-
-			"play_description":	"{player} accuses {@target} of being a lying knave.",
-			"play_actions": [ "accuse-of-knavedom" ]
 		}
 	}
 }
