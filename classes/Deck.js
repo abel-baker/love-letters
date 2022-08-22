@@ -1,7 +1,16 @@
+const config = require('../config.json');
 const { Card, Cards } = require('./Card');
 
+const standardDeck = [];
+
+for (const card in config.cards) {
+  for (let i = 0; i < config.cards[card].deck_quantity; i++) {
+    standardDeck.push(Cards[card.toUpperCase()]);
+  }
+}
+
 class Deck extends Array {
-  constructor(source = [Cards.PRINCESS, Cards.COUNTESS, Cards.PRINCE]) {
+  constructor(source = standardDeck) {
     super(...source);
   }
 

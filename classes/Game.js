@@ -1,6 +1,5 @@
 const Player = require('./Player');
 const Deck = require('./Deck');
-const { Card, Cards } = require('./Card');
 
 class Game {
   constructor(config) {
@@ -28,7 +27,7 @@ class Game {
     this.aside = new Deck([]);
     this.faceup = new Deck([]);
 
-    console.log(this.deck);
+    this.deck.shuffle();
 
     // Iterate through Players and clear their hands
     for (const member of this.players) {
