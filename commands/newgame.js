@@ -10,10 +10,7 @@ module.exports = {
     const guild = interaction.guild;
 
     const game = new Game(guild, channel);
-    interaction.client.game = game;
-
-    console.log(`Creating new game in ${guild.name}[${guild.id}]#${channel.name}[${channel.id}]`);
-    
+    interaction.client.game = game;    
 
     game.new();
     game.start();

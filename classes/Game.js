@@ -3,6 +3,8 @@ const Deck = require('./Deck');
 
 class Game {
   constructor(guild, channel) {
+    console.log(`Creating new game in ${guild.name}[${guild.id}]#${channel.name}[${channel.id}]`);
+    
     this.guild = guild;
     this.channel = channel;
 

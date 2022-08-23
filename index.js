@@ -34,32 +34,6 @@ for (const file of eventFiles) {
   }
 }
 
-// Instantiate game
-client.game = new Game();
-
-client.on('interactionCreate', async interaction => {
-  if (!interaction.isChatInputCommand()) return;
-
-  const command = client.commands.get(interaction.commandName);
-  if (!command) return;
-
-  try {
-    await command.execute(interaction);
-  } catch (error) {
-    console.error(error);
-    await interaction.reply({ content: 'There was an error while executing this command.', ephemeral: true });
-  }
-});
-
-
-client.on('interactionCreate', async interaction => {
-  if (!interaction.isButton()) return;
-
-  interaction.customId += `bingo`;
-
-  await interaction.reply({ content: `Pongerama ${interaction.customId}`, ephemeral: true });
-});
-
 
 // Login to Discord with client's token
 client.login(TOKEN);

@@ -6,8 +6,17 @@ module.exports = {
     .setDescription('Join the game of Love Letters.'),
   async execute(interaction) {
     const game = interaction.client.game;
-    if (game.status === 'inactive') {
+
+    // Confirm a game is running
+    if (game?.status === 'inactive') {
       await interaction.reply({ content: 'No active game; try /newgame', ephemeral: true });
+      return;
+    }
+
+    // Confirm we're in the right channel
+    if (interaction.guild !== game.guild || interaction.channel !== game.channel) {
+
+      await interaction.reply({ content: `This isn't the game channel--head over to ${game.channel}`});
       return;
     }
 
