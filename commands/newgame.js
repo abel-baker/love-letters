@@ -1,5 +1,13 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder } = require('discord.js');
 const Game = require('../classes/Game');
+
+const buttonJoinNewGame = new ButtonBuilder()
+  .setCustomId('replyToJoin')
+  .setLabel('Join')
+  .setStyle(ButtonStyle.Primary)
+  .setEmoji('💌');
+const row = new ActionRowBuilder()
+  .addComponents(buttonJoinNewGame);
 
 const slashNewGame = {
   data: new SlashCommandBuilder()
@@ -19,10 +27,15 @@ const slashNewGame = {
 
     const game = new Game(guild, channel);
     interaction.client.game = game;
-
+    
     game.new();
     game.start();
     await interaction.reply({ content: `Created game in ${game.address}`, ephemeral: true });
+
+    await interaction.channel.send({
+      content: `:love_letter: ${interaction.member} would like to play Love Letters!`,
+      components: [row]
+    });
 
     game.join(interaction.member);
   }

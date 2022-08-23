@@ -1,3 +1,5 @@
+const replyToJoin = require('../interactions/replyToJoin');
+
 const onInteractionCreate = {
   name: 'interactionCreate',
   async execute(interaction) {
@@ -19,6 +21,8 @@ const onInteractionCreate = {
     if (interaction.isButton()) {
       // Process the button.
       console.log('interactionCreate isButton', interaction);
+
+      await replyToJoin.execute(interaction);
 
       return;
     }
