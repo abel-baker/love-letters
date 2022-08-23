@@ -2,8 +2,9 @@ const Player = require('./Player');
 const Deck = require('./Deck');
 
 class Game {
-  constructor(config) {
-    this.config = config;
+  constructor(guild, channel) {
+    this.guild = guild;
+    this.channel = channel;
 
     this.new();
   }
@@ -16,13 +17,13 @@ class Game {
 
     // set of GuildMember to add/create (map) or remove
     this.queueJoin = new Set();
-    this.queueLaeve = new Set();
+    this.queueLeave = new Set();
 
-    this.reset();
+    this.resetCards();
   }
 
   // Resets decks, play history, and Player hands
-  reset() {
+  resetCards() {
     this.deck = new Deck();
     this.aside = new Deck([]);
     this.faceup = new Deck([]);
@@ -42,15 +43,33 @@ class Game {
   }
 
   join(member) {
-    if (this.players.has(member)) return false;
-
-    this.players.set(member, new Player(member));
-    return true;
+    try {
+      if (this.players.has(member)) return false;
+  
+      this.players.set(member, new Player(member));
+      return true;
+    } catch(err) {
+      console.log('There was an error adding member to game', member, err);
+    }
   }
 
   playing() {
     return [...this.players.values()].map(player => player.getDisplayName()).join(',');
     // return this.players;
+  }
+  refreshPlayers() {
+    // Remove any players who left before this round
+    for (let queuedMember of this.queueLeave) {
+      this.players.delete(queuedMember);
+    }
+    this.queueLeave = new Set();
+
+    // Add any players who joined during a hand
+    for (let queuedMember of this.queueJoin) {
+      // future: lookup member for existing Player object, or check db, and use that instead
+      this.players.set(queuedMember, new Player(member));
+    }
+    this.queueJoin = new Set();
   }
 
 }
