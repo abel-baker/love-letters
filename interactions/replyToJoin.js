@@ -1,4 +1,4 @@
-const replyToButton = {
+const replyToJoin = {
   name: 'replyToJoin',
   async execute(interaction) {
     console.log('Embedded button pressed');
@@ -7,4 +7,4 @@ const replyToButton = {
 
 }
 
-module.exports = replyToButton;
+module.exports = replyToJoin;

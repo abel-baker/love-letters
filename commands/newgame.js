@@ -33,7 +33,7 @@ const slashNewGame = {
     await interaction.reply({ content: `Created game in ${game.address}`, ephemeral: true });
 
     await interaction.channel.send({
-      content: `:love_letter: ${interaction.member} would like to play Love Letters!`,
+      content: `**${interaction.member.displayName}** would like to play Love Letters!`,
       components: [row]
     });
 
