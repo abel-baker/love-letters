@@ -16,7 +16,7 @@ module.exports = {
     // Confirm we're in the right channel
     if (interaction.guild !== game.guild || interaction.channel !== game.channel) {
 
-      await interaction.reply({ content: `This isn't the game channel--head over to ${game.channel}`});
+      await interaction.reply({ content: `This isn't the game channel--head over to ${game.channel}`, ephemeral: true });
       return;
     }
 

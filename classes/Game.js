@@ -3,13 +3,18 @@ const Deck = require('./Deck');
 
 class Game {
   constructor(guild, channel) {
-    console.log(`Creating new game in ${guild.name}[${guild.id}]#${channel.name}[${channel.id}]`);
-    
     this.guild = guild;
     this.channel = channel;
 
+    console.log(`Creating new game in ${this.address}`);
+
     this.new();
   }
+
+  get address() {
+    return `${this.guild.name}[${this.guild.id}]#${this.channel.name}[${this.channel.id}]`;
+  }
+
 
   new() {
     this.status = 'inactive';
