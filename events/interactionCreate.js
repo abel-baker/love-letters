@@ -20,9 +20,8 @@ const onInteractionCreate = {
 
     if (interaction.isButton()) {
       // Process the button.
-      console.log('interactionCreate isButton', interaction);
-
-      await replyToJoin.execute(interaction);
+      const action = interaction.client.interactions.get(interaction.customId);
+      await action(interaction);
 
       return;
     }
