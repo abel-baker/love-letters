@@ -61,7 +61,7 @@ class Game {
   }
 
   playing() {
-    return [...this.players.values()].map(player => player.getDisplayName()).join(',');
+    return [...this.players.values()].map(player => player.getDisplayName()).join(', ');
     // return this.players;
   }
   refreshPlayers() {

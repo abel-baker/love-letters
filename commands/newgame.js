@@ -1,5 +1,6 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder } = require('discord.js');
 const Game = require('../classes/Game');
+const config = require('../config.json');
 
 const buttonJoinNewGame = new ButtonBuilder()
   .setCustomId('replyToJoin')
@@ -24,6 +25,7 @@ const slashNewGame = {
 
     const channel = interaction.channel;
     const guild = interaction.guild;
+    const client = interaction.client;
 
     const game = new Game(guild, channel);
     interaction.client.game = game;
@@ -32,12 +34,31 @@ const slashNewGame = {
     game.start();
     await interaction.reply({ content: `Created game in ${game.address}`, ephemeral: true });
 
-    await interaction.channel.send({
-      content: `**${interaction.member.displayName}** would like to play Love Letters!`,
-      components: [row]
-    });
-
     game.join(interaction.member);
+
+    const embed = {
+      color: config.embed_color,
+      thumbnail: { url: interaction.user.displayAvatarURL() },
+
+      // author: {
+      //   name: `${interaction.member.displayName} wants to play!`,
+      //   iconURL: config.bot_avatar_url
+      // },
+
+      title: `:love_letter: You're invited!`,
+      description: `**${interaction.member.displayName}** wants to play **Love Letters**!  Click the **Join** button to play along`,
+
+      footer: {
+        icon_url: config.bot_avatar_url,
+        text: `Currently playing: ${game.playing()}`
+      }
+    }
+
+    await interaction.channel.send({
+      // content: `**${interaction.member.displayName}** would like to play Love Letters!`,
+      components: [row],
+      embeds: [embed],
+    });
   }
 };
 

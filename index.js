@@ -3,7 +3,6 @@ const fs = require('node:fs');
 const path = require('node:path');
 const TOKEN = process.env.TOKEN;
 const { Client, Collection, GatewayIntentBits } = require('discord.js');
-const Game = require('./classes/Game');
 
 // Client instance
 const client = new Client({ intents: [GatewayIntentBits.Guilds] });
