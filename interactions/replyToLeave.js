@@ -8,7 +8,6 @@ const replyToLeave = {
 
     if (success) {
       const receivedEmbed = interaction.message.embeds[0];
-      console.log(receivedEmbed);
 
       const newEmbed = { ...receivedEmbed.data, 
         footer: {

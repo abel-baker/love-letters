@@ -57,6 +57,7 @@ class Game {
       return true;
     } catch(err) {
       console.log('There was an error adding member to game', member, err);
+      return false;
     }
   }
   leave(member) {
