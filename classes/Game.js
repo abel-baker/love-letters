@@ -59,6 +59,14 @@ class Game {
       console.log('There was an error adding member to game', member, err);
     }
   }
+  leave(member) {
+    if (this.players.has(member)) {
+      this.players.delete(member);
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   playing() {
     return [...this.players.values()].map(player => player.getDisplayName()).join(', ');

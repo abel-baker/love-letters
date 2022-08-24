@@ -7,8 +7,18 @@ const buttonJoinNewGame = new ButtonBuilder()
   .setLabel('Join')
   .setStyle(ButtonStyle.Primary)
   .setEmoji('💌');
+const buttonLeaveGame = new ButtonBuilder()
+  .setCustomId('replyToLeave')
+  .setLabel('Leave')
+  .setStyle(ButtonStyle.Secondary)
+const buttonBeginNewGame = new ButtonBuilder()
+  .setCustomId('replyToBegin')
+  .setLabel('Play!')
+  .setStyle(ButtonStyle.Secondary)
+  .setDisabled(true);
+
 const row = new ActionRowBuilder()
-  .addComponents(buttonJoinNewGame);
+  .addComponents([buttonJoinNewGame, buttonLeaveGame, buttonBeginNewGame]);
 
 const slashNewGame = {
   data: new SlashCommandBuilder()
@@ -50,7 +60,7 @@ const slashNewGame = {
 
       footer: {
         icon_url: config.bot_avatar_url,
-        text: `Currently playing: ${game.playing()}`
+        text: `Currently playing ${game.players.size || 0}/${config.max_group_size || 6}: ${game.playing()}`
       }
     }
 
