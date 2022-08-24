@@ -1,4 +1,4 @@
-const config = require('../config.json');
+const footer = require('../components/footer');
 
 const replyToLeave = {
   name: 'replyToLeave',
@@ -10,10 +10,7 @@ const replyToLeave = {
       const receivedEmbed = interaction.message.embeds[0];
 
       const newEmbed = { ...receivedEmbed.data, 
-        footer: {
-          icon_url: config.bot_avatar_url,
-          text: `Currently playing ${game.players.size || 0}/${config.max_group_size || 6}: ${game.playing()}`
-        }
+        footer: footer(game)
       };
   
       await interaction.update({ embeds: [newEmbed] });

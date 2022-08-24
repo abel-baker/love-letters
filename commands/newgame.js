@@ -1,6 +1,8 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle, SlashCommandBuilder } = require('discord.js');
 const Game = require('../classes/Game');
 const config = require('../config.json');
+const footer = require('../components/footer');
+const inviteEmbed = require('../components/inviteEmbed');
 
 const buttonJoinNewGame = new ButtonBuilder()
   .setCustomId('replyToJoin')
@@ -42,32 +44,31 @@ const slashNewGame = {
     
     game.new();
     game.start();
-    await interaction.reply({ content: `Created game in ${game.address}`, ephemeral: true });
+    // await interaction.reply({ content: `Created game in ${game.address}`, ephemeral: true });
 
     game.join(interaction.member);
 
-    const embed = {
-      color: config.embed_color,
-      thumbnail: { url: interaction.user.displayAvatarURL() },
+    // const embed = {
+    //   color: config.embed_color,
+    //   thumbnail: { url: interaction.user.displayAvatarURL() },
 
-      // author: {
-      //   name: `${interaction.member.displayName} wants to play!`,
-      //   iconURL: config.bot_avatar_url
-      // },
+    //   // author: {
+    //   //   name: `${interaction.member.displayName} wants to play!`,
+    //   //   iconURL: config.bot_avatar_url
+    //   // },
 
-      title: `:love_letter: You're invited!`,
-      description: `**${interaction.member.displayName}** wants to play **Love Letters**!  Click the **Join** button to play along`,
+    //   title: `You're invited!`,
+    //   description: `**${interaction.member.displayName}** wants to play **Love Letters**!  Click the **Join** button to play along.`,
 
-      footer: {
-        icon_url: config.bot_avatar_url,
-        text: `Currently playing ${game.players.size || 0}/${config.max_group_size || 6}: ${game.playing()}`
-      }
-    }
+    //   footer: footer(game)
+    // }
 
-    await interaction.channel.send({
+    const newEmbed = inviteEmbed(interaction);
+
+    await interaction.reply({
       // content: `**${interaction.member.displayName}** would like to play Love Letters!`,
       components: [row],
-      embeds: [embed],
+      embeds: [newEmbed],
     });
   }
 };
