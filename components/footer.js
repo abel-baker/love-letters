@@ -2,8 +2,7 @@ const config = require('../config.json');
 
 const footer = (game) => {
   const current = game.players.size || 0;
-  const max = config.max_group_size || 6;
-
+  const max = config.rules.max_group_size || 4;
 
   const wrapper = (body) => current === 0? `(${body})` : `(${body}):`;
 

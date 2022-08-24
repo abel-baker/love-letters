@@ -3,6 +3,7 @@ const Game = require('../classes/Game');
 const config = require('../config.json');
 const footer = require('../components/footer');
 const inviteEmbed = require('../components/inviteEmbed');
+const inviteButtons = require('../components/inviteButtons');
 
 const buttonJoinNewGame = new ButtonBuilder()
   .setCustomId('replyToJoin')
@@ -19,8 +20,8 @@ const buttonBeginNewGame = new ButtonBuilder()
   .setStyle(ButtonStyle.Secondary)
   .setDisabled(true);
 
-const row = new ActionRowBuilder()
-  .addComponents([buttonJoinNewGame, buttonLeaveGame, buttonBeginNewGame]);
+// const row = new ActionRowBuilder()
+//   .addComponents([buttonJoinNewGame, buttonLeaveGame, buttonBeginNewGame]);
 
 const slashNewGame = {
   data: new SlashCommandBuilder()
@@ -44,29 +45,13 @@ const slashNewGame = {
     
     game.new();
     game.start();
-    // await interaction.reply({ content: `Created game in ${game.address}`, ephemeral: true });
 
     game.join(interaction.member);
 
-    // const embed = {
-    //   color: config.embed_color,
-    //   thumbnail: { url: interaction.user.displayAvatarURL() },
-
-    //   // author: {
-    //   //   name: `${interaction.member.displayName} wants to play!`,
-    //   //   iconURL: config.bot_avatar_url
-    //   // },
-
-    //   title: `You're invited!`,
-    //   description: `**${interaction.member.displayName}** wants to play **Love Letters**!  Click the **Join** button to play along.`,
-
-    //   footer: footer(game)
-    // }
-
     const newEmbed = inviteEmbed(interaction);
+    const row = inviteButtons(game);
 
     await interaction.reply({
-      // content: `**${interaction.member.displayName}** would like to play Love Letters!`,
       components: [row],
       embeds: [newEmbed],
     });

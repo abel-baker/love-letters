@@ -1,3 +1,4 @@
+const config = require('../config.json');
 const Player = require('./Player');
 const Deck = require('./Deck');
 
@@ -51,7 +52,14 @@ class Game {
 
   join(member) {
     try {
-      if (this.players.has(member)) return false;
+      if (this.players.has(member)) {
+        if (config.debug) {
+          const fakeMember = { ...member, displayName: `fake ${member.displayName}`};
+          this.players.set(fakeMember, new Player(member));
+          return true;
+        }
+        return false;
+      }
   
       this.players.set(member, new Player(member));
       return true;
