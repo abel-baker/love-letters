@@ -1,4 +1,5 @@
 const { Verify } = require('../utils/check');
+const playButtons = require('../components/playButtons');
 
 const showHand = {
   name: 'showHand',
@@ -15,8 +16,9 @@ const showHand = {
     }
 
     const hand = game.players.get(interaction.member).hand;
+    const components = playButtons(hand);
 
-    await interaction.reply({ content: `Your hand contains  ${hand.map(card => card.props.label).join(' &  ')}.  You ${await Verify.MemberIsCurrentPlayer(client, interaction.member)? `are` : `are not`} the current player.`, ephemeral: true });
+    await interaction.reply({ components: [components], content: `Your hand contains  ${hand.map(card => card.props.label).join(' &  ')}.  You ${await Verify.MemberIsCurrentPlayer(client, interaction.member)? `are` : `are not`} the current player.`, ephemeral: true });
   }
 }
 
