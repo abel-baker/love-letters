@@ -1,7 +1,5 @@
 // AUTH
 
-const config = client.config;
-const game = client.game;
 
 // Ensure the GuildMember in question has the permissions required
 // to perform their requested action.
@@ -13,9 +11,16 @@ const game = client.game;
 
 // possibly, the dealer (or next person to deal);
 
+const verifyGameExists = (interaction) => {
+  const game = interaction.client.game;
 
-// Playing and not leaving
-if ( !game.players.has(interaction.member) || game.queueLeave.has(interaction.member)) {
-  // Looks like you're not playing the next hand.  /join to play the next hand
+  if (game) return true;
+  else return false;
 }
 
+// // Playing and not leaving
+// if ( !game.players.has(interaction.member) || game.queueLeave.has(interaction.member)) {
+//   // Looks like you're not playing the next hand.  /join to play the next hand
+// }
+
+module.exports = verifyGameExists;

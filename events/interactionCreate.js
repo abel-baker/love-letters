@@ -19,9 +19,17 @@ const onInteractionCreate = {
     }
 
     if (interaction.isButton()) {
-      // Process the button.
-      const action = interaction.client.interactions.get(interaction.customId);
-      await action(interaction);
+
+      try {
+        // Process the button.
+        const action = interaction.client.interactions.get(interaction.customId);
+        await action(interaction);
+  
+        return;
+      } catch (err) {
+        console.error(err);
+        await interaction.reply({ content: `There was an error executing button press: ${interaction.customId}`, ephemeral: true });
+      }
 
       return;
     }

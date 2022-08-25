@@ -1,6 +1,7 @@
 const config = require('../config.json');
 const Player = require('./Player');
-const Deck = require('./Deck');
+const { Deck, standardDeck } = require('./Deck');
+const { Card } = require('./Card');
 
 class Game {
   constructor(guild, channel) {
@@ -28,13 +29,24 @@ class Game {
     this.queueLeave = new Set();
 
     this.resetCards();
+    this.setAside();
   }
+
+  start() {
+    this.status = 'active';
+    this.setAside();
+
+    
+  }
+
+
+  ///// DECK FUNCTIONS /////
 
   // Resets decks, play history, and Player hands
   resetCards() {
-    this.deck = new Deck();
-    this.aside = new Deck([]);
-    this.faceup = new Deck([]);
+    this.deck = new Deck(...standardDeck);
+    this.aside = new Card({ name: "knave" });
+    this.faceup = new Deck();
 
     this.deck.shuffle();
 
@@ -46,15 +58,21 @@ class Game {
     this.history = new Set();
   }
 
-  start() {
-    this.status = 'active';
+  setAside() {
+    this.aside = this.deck.pop();
+    return this.aside;
   }
+
+
+  ///// PLAYER FUNCTIONS /////
 
   join(member) {
     try {
+      // if (this.players.size >= config.rules.max_group_size) return false; // add to queue instead
+
       if (this.players.has(member)) {
         if (config.debug) {
-          const fakeMember = { ...member, displayName: `fake ${member.displayName}`};
+          const fakeMember = { ...member, nickname: `fake ${member.nickname}` };
           this.players.set(fakeMember, new Player(member));
           return true;
         }
@@ -69,7 +87,11 @@ class Game {
     }
   }
   leave(member) {
+    // If the Game's list of players contains the player in question, remove them.
     if (this.players.has(member)) {
+      // Add them to the remove queue
+      // this.queueLeave.push(member);
+
       this.players.delete(member);
       return true;
     } else {
@@ -78,7 +100,7 @@ class Game {
   }
 
   playing() {
-    return [...this.players.values()].map(player => player.getDisplayName()).join(', ');
+    return [...this.players.keys()].map(member => member.nickname).join(', ');
     // return this.players;
   }
   refreshPlayers() {

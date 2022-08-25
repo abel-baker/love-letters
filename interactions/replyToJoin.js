@@ -1,11 +1,17 @@
 const inviteEmbed = require('../components/inviteEmbed');
 const inviteButtons = require('../components/inviteButtons');
+const verifyGameExists = require('../utils/auth');
 
 const replyToJoin = {
   name: 'replyToJoin',
   async execute(interaction) {
+    if (!verifyGameExists(interaction)) {
+      await interaction.reply({ content: `Doesn't look like there is a game afoot`, ephemeral: true });
+      return;
+    }
+
     const game = interaction.client.game;
-    const success = game?.join(interaction.member);
+    const success = game.join(interaction.member);
 
     if (success) {
       const newEmbed = inviteEmbed(interaction);

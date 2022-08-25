@@ -10,7 +10,7 @@ for (const card in config.cards) {
 }
 
 class Deck extends Array {
-  constructor(source = standardDeck) {
+  constructor(...source) { 
     super(...source);
   }
 
@@ -27,4 +27,4 @@ class Deck extends Array {
   }
 }
 
-module.exports = Deck;
+module.exports = { Deck, standardDeck };
