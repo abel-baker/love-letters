@@ -15,8 +15,10 @@ const showHand = {
       return;
     }
 
+    // const isCurrentPlayer = await Verify.MemberIsCurrentPlayer;
+
     const hand = game.players.get(interaction.member).hand;
-    const components = playButtons(hand);
+    const components = playButtons(hand, await Verify.MemberIsCurrentPlayer(client, interaction.member));
 
     await interaction.reply({ components: [components], content: `Your hand contains  ${hand.map(card => card.props.label).join(' &  ')}.  You ${await Verify.MemberIsCurrentPlayer(client, interaction.member)? `are` : `are not`} the current player.`, ephemeral: true });
   }
