@@ -22,6 +22,7 @@
 	"cards": {
 		"princess": {
 			"value":	8,
+			"value_emoji": "8️⃣",
 			"deck_quantity":	1,
 			"label": 	":eight::princess:",
 			"hidden":	"||:eight::princess:||",
@@ -43,6 +44,7 @@
 		},
 		"countess": {
 			"value":	7,
+			"value_emoji": "7️⃣",
 			"deck_quantity":	1,
 			"label": 	":seven::woman:",
 			"hidden":	"||:seven::woman:||",
@@ -64,6 +66,7 @@
 		},
 		"king": {
 			"value":	6,
+			"value_emoji": "6️⃣",
 			"deck_quantity":	1,
 			"label": 	":six::lion:",
 			"hidden":	"||:six::lion:||",
@@ -85,6 +88,7 @@
 		},
 		"prince": {
 			"value":	5,
+			"value_emoji": "5️⃣",
 			"deck_quantity":	2,
 			"label": 	":five::prince:",
 			"hidden":	"||:five::prince:||",
@@ -106,6 +110,7 @@
 		},
 		"handmaid": {
 			"value":	4,
+			"value_emoji": "4️⃣",
 			"deck_quantity":	2,
 			"label": 	":four::girl:",
 			"hidden":	"||:four::girl:||",
@@ -129,6 +134,7 @@
 		},
 		"baron": {
 			"value":	3,
+			"value_emoji": "3️⃣",
 			"deck_quantity":	2,
 			"label": 	":three::man:",
 			"hidden":	"||:three::man:||",
@@ -150,6 +156,7 @@
 		},
 		"priest": {
 			"value":	2,
+			"value_emoji": "2️⃣",
 			"deck_quantity":	2,
 			"label": 	":two::older_man:",
 			"hidden":	"||:two::older_man:||",
@@ -171,6 +178,7 @@
 		},
 		"guard": {
 			"value":	1,
+			"value_emoji": "1️⃣",
 			"deck_quantity":	5,
 			"label": 	":one::guardsman:",
 			"hidden":	"||:one::guardsman:||",

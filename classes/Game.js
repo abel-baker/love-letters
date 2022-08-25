@@ -129,6 +129,9 @@ class Game {
     this.queueJoin = new Set();
   }
 
+  isPlaying(member) {
+    return this.players.has(member);
+  }
   currentPlayer() {
     this.turnIndex = this.turnIndex % this.players.size;
     const member = [...this.players.keys()][this.turnIndex];
@@ -136,8 +139,12 @@ class Game {
     return [member, player];
   }
   nextPlayer() {
+    const nextTurnIndex = (this.turnIndex + 1) % this.players.size;
+    const nextMember = [...this.players.keys()][nextTurnIndex];
+    return nextMember;
+  }
+  advancePlayer() {
     this.turnIndex++;
-    return this.currentPlayer();
   }
 
 }

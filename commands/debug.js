@@ -1,7 +1,8 @@
 const { SlashCommandBuilder } = require('discord.js');
 const Game = require('../classes/Game');
-const { Cards } = require('../classes/Card');
-const footer = require('../components/footer');
+const { Verify } = require('../utils/check');
+const startEmbed = require('../components/startEmbed');
+const optionsButtons = require('../components/optionsButtons');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -12,8 +13,18 @@ module.exports = {
     const guild = interaction.guild;
     const channel = interaction.channel;
 
+    console.log('Verify: ', await Verify.GameExists(client), await Verify.GameActive(client));
+
+    // if (await Verify.GameExists(client)) console.log(`Game verified with auth`);
+    // else console.log(`No game verified with auth`);
+
     const game = new Game(guild, channel);
     client.game = game;
+
+    console.log('Verify: ', await Verify.GameExists(client), await Verify.GameActive(client));
+
+    // if (await Verify.GameExists(client)) console.log(`Game verified with auth`);
+    // else console.log(`No game verified with auth`);
 
     // Start and join game with me and two fake sweets william
     game.join(interaction.member);
@@ -22,10 +33,14 @@ module.exports = {
 
     game.start();
 
-    await interaction.reply({ content: `Starting game with: \n${
-      [...game.players].map(([member, player]) => {
-        return `${member.nickname}, holding ${player.hand.map(card => card.name)}`
-      }).join('\n')
-    }` });
+    const embeds = [startEmbed(interaction)];
+    const components = [optionsButtons()]
+
+    console.log('Verify: ', await Verify.GameExists(client), await Verify.GameActive(client));
+
+    // if (await Verify.GameExists(client)) console.log(`Game verified with auth`);
+    // else console.log(`No game verified with auth`);
+
+    await interaction.reply({ components, embeds });
   }
 };

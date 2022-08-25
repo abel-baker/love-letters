@@ -1,19 +1,19 @@
+const { Verify } = require('../utils/check');
 const inviteEmbed = require('../components/inviteEmbed');
 const inviteButtons = require('../components/inviteButtons');
-const verifyGameExists = require('../utils/auth');
 const { EmbedBuilder } = require('discord.js');
 
 const replyToJoin = {
   name: 'replyToJoin',
   async execute(interaction) {
+    const client = interaction.client;
+    const game = client.game;
+
     const inviteMessage = interaction.message;
     const inviteCommand = inviteMessage.interaction;
     console.log(`Clicked join button from message from command`, inviteCommand.id);
-    
-    const game = interaction.client.game;
-
-    if (!game?.origin || inviteCommand.id !== game?.origin) {
-      console.log(`Origin mismatch`, game?.origin);
+    if (inviteCommand.id !== game.origin) {
+      console.log(`Origin mismatch`, game.origin);
       const expiredEmbed = new EmbedBuilder().setDescription(`:crossed_swords: **Oh dear**, this invitation has expired.`);
 
       await interaction.update({ components: [], embeds: [...interaction.message.embeds, expiredEmbed] });
@@ -28,10 +28,10 @@ const replyToJoin = {
     // console.log(`Latest invite ${game.latestInvite.id}`, id);
     // if (game.latestInvite.id !== id) {
     //   console.log(`invite id mismatch`);
-    // }    
+    // }
     
 
-    if (!verifyGameExists(interaction)) {
+    if (!Verify.GameExists(client)) {
       await interaction.reply({ content: `Doesn't look like there is a game afoot`, ephemeral: true });
       return;
     }
