@@ -5,6 +5,7 @@ const verifyGameExists = require('../utils/auth');
 const replyToJoin = {
   name: 'replyToJoin',
   async execute(interaction) {
+    console.log(`Replying to invite ${interaction.customId}`);
     if (!verifyGameExists(interaction)) {
       await interaction.reply({ content: `Doesn't look like there is a game afoot`, ephemeral: true });
       return;

@@ -12,7 +12,7 @@ const row = (game) => {
   const max = config.rules.max_group_size || 4;
 
   const buttonJoinNewGame = new ButtonBuilder()
-    .setCustomId('replyToJoin')
+    .setCustomId(`replyToJoin/${game.latestInvite}`)
     .setLabel('Join')
     .setStyle(ButtonStyle.Primary);
 
