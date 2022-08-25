@@ -12,41 +12,52 @@
 // possibly, the dealer (or next person to deal);
 const Verify = {
   async GameExists(client) {
-    const out = ['Beginning verify exists'];
+    const out = ['Verifying game exists: '];
     
-    out.push(`Game: ${client.game ? 'detected' : 'not detected'}`);
-    const status = client.game?.status;
-    out.push(`Status: ${status}`);
     const check = (client.game ? true : false);
-    out.push(`Logic check: ${check}`);
+    out.push(check);
+    
     console.log(out);
-
     return check;
   },
   async GameActive(client) {
-    const out = ['Beginning verify active'];
+    const out = ['Verifying game is active: '];
     
-    out.push(`Game: ${client.game ? 'detected' : 'not detected'}`);
     const status = client.game?.status;
-    out.push(`Status: ${status}`);
     const check = (client.game ? true : false) && status === 'active';
-    out.push(`Logic check: ${check}`);
+    out.push(check);
+
     console.log(out);
+    return check;
+  },
+
+  async MemberIsInGame(client, member) {
+    if (!await this.GameExists(client)) return false;
     
+    const out = [`Verifying member ${member.nickname} is in game: `];
+    const game = client.game;
+    const check = game.isPlaying(member);
+    out.push(check);
+
+    console.log(out);
+    return check;
+  },
+  async MemberIsCurrentPlayer(client, member) {
+    if (!await this.MemberIsInGame(client, member)) return false;
+
+    const out = [`Verifying member ${member.nickname} is current player: `];
+    const game = client.game;
+    const [currentMember, currentPlayer] = game.currentPlayer();
+    const check = member === currentMember;
+    out.push(check);
+
+    console.log(out);
     return check;
   }
 }
-
-const verifyGameExists = (interaction) => {
-  const game = interaction.client.game;
-
-  if (game) return true;
-  else return false;
-}
-
 // // Playing and not leaving
 // if ( !game.players.has(interaction.member) || game.queueLeave.has(interaction.member)) {
 //   // Looks like you're not playing the next hand.  /join to play the next hand
 // }
 
-module.exports = { Verify, verifyGameExists };
+module.exports = { Verify };

@@ -3,7 +3,7 @@ const config = require('../config.json');
 const embed = (interaction) => {
   const game = interaction.client.game;
   const [startingMember, startingPlayer] = game.currentPlayer();
-  const [nextMember, nextPlayer] = game.nextPlayer();
+  const nextMember = game.nextPlayer();
 
   const out = {
     color: config.embed_color,
@@ -15,7 +15,7 @@ const embed = (interaction) => {
     },
 
     // title: `You're invited! :love_letter:`,
-    description: `Players ${[...game.players].map(([member, player]) => member.nickname).join(', ')} have been dealt 1 card each.  The starting player will be ${startingMember}.
+    description: `Players ${[...game.players].map(([member, player]) => `**${member.nickname}**`).join(', ')} have been dealt 1 card each.  The starting player will be ${startingMember}.
     
     Let the game of :love_letter: **Love Letters** begin!`,
 

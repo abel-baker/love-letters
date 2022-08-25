@@ -1,3 +1,4 @@
+const { Verify } = require('../utils/check');
 const inviteEmbed = require('../components/inviteEmbed');
 const inviteButtons = require('../components/inviteButtons');
 const { EmbedBuilder } = require('discord.js');
@@ -5,7 +6,8 @@ const { EmbedBuilder } = require('discord.js');
 const replyToJoin = {
   name: 'replyToJoin',
   async execute(interaction) {
-    const game = interaction.client.game;
+    const client = interaction.client;
+    const game = client.game;
 
     const inviteMessage = interaction.message;
     const inviteCommand = inviteMessage.interaction;
@@ -29,7 +31,7 @@ const replyToJoin = {
     // }
     
 
-    if (!verifyGameExists(interaction)) {
+    if (!Verify.GameExists(client)) {
       await interaction.reply({ content: `Doesn't look like there is a game afoot`, ephemeral: true });
       return;
     }
