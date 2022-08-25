@@ -1,7 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 const Game = require('../classes/Game');
-const { Cards } = require('../classes/Card');
-const footer = require('../components/footer');
+const { Verify } = require('../utils/check');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -9,8 +8,11 @@ module.exports = {
     .setDescription('Debug the next step of Love Letters.'),
   async execute(interaction) {
     const client = interaction.client;
-    const guild = interaction.guild;
-    const channel = interaction.channel;
+
+    if (!await Verify.GameActive(client)) {
+      await interaction.reply({ content: `No game or no game active`, ephemeral: true });
+      return;
+    }
 
     const game = client.game;
     let index = game.turnIndex % game.players.size;

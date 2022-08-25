@@ -1,6 +1,5 @@
 const inviteEmbed = require('../components/inviteEmbed');
 const inviteButtons = require('../components/inviteButtons');
-const verifyGameExists = require('../utils/auth');
 const { EmbedBuilder } = require('discord.js');
 
 const replyToJoin = {
@@ -27,7 +26,7 @@ const replyToJoin = {
     // console.log(`Latest invite ${game.latestInvite.id}`, id);
     // if (game.latestInvite.id !== id) {
     //   console.log(`invite id mismatch`);
-    // }    
+    // }
     
 
     if (!verifyGameExists(interaction)) {

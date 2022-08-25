@@ -1,6 +1,6 @@
 const inviteEmbed = require('../components/inviteEmbed');
 const inviteButtons = require('../components/inviteButtons');
-const verifyGameExists = require('../utils/auth');
+const verifyGameExists = require('../utils/check');
 
 const replyToBegin = {
   name: 'replyToBegin',
