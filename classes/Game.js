@@ -29,14 +29,20 @@ class Game {
     this.queueLeave = new Set();
 
     this.resetCards();
-    this.setAside();
   }
 
   start() {
     this.status = 'active';
-    this.setAside();
 
-    
+    console.log(`Now playing: ${[...this.players.keys()].map(member => member.nickname).join(', ')}`);
+
+    this.setAside();
+    console.log(`Setting aside ${this.aside.name}`);
+
+    for (let [member, player] of this.players) {
+      player.draw(...this.deck.draw(1));
+      console.log(`${member.nickname}'s hand`, [...player.hand].map(card => card.name));
+    }
   }
 
 
@@ -57,10 +63,13 @@ class Game {
 
     this.history = new Set();
   }
-
   setAside() {
     this.aside = this.deck.pop();
     return this.aside;
+  }
+  deal(member, count = 1) {
+    this.players.get(member).drawFrom(this.deck, count);
+    console.log(`Dealing ${count} cards to ${member.nickname}`, [...this.players.get(member).hand].map(card => card.name));
   }
 
 

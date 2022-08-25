@@ -25,6 +25,14 @@ class Deck extends Array {
 
     return this;
   }
+
+  draw(count = 1) {
+    const drawn = [];
+    for (let i = 0; i < count; i++) {
+      drawn.push(this.pop());
+    }
+    return drawn;
+  }
 }
 
 module.exports = { Deck, standardDeck };

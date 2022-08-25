@@ -18,13 +18,24 @@ class Player {
   clearHand() {
     this.hand = new Deck();
   }
-  draw(card) {
-    this.hand.push(card);
+  draw(...cards) {
+    this.hand.push(...cards);
+    return this.hand;
+  }
+  drawFrom(deck, count = 1) {
+    this.hand.push(...deck.draw(count));
     return this.hand;
   }
   play(card) {
+    console.log(`${this.member.nickname} playing`, card.name);
     if (this.hand.includes(card)) {
       // Remove and return card
+      const index = this.hand.indexOf(card);
+      const played = this.hand.splice(index, 1);
+
+      return played;
+    } else {
+      console.log(`${card.name} not found in hand`);
     }
   }
 }
