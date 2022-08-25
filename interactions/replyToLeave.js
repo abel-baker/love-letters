@@ -1,5 +1,6 @@
 const inviteEmbed = require('../components/inviteEmbed');
 const inviteButtons = require('../components/inviteButtons');
+const { EmbedBuilder } = require('discord.js');
 
 const replyToLeave = {
   name: 'replyToLeave',
@@ -8,8 +9,16 @@ const replyToLeave = {
     const inviteCommand = inviteMessage.interaction;
     console.log(`Clicked leave button from message from command`, inviteCommand.id);
 
-
     const game = interaction.client.game;
+
+    if (!game?.origin || inviteCommand.id !== game?.origin) {
+      console.log(`Origin mismatch`, game?.origin);
+      const expiredEmbed = new EmbedBuilder().setDescription(`:crossed_swords: **Oh dear**, this invitation has expired.`);
+
+      await interaction.update({ components: [], embeds: [...interaction.message.embeds, expiredEmbed] });
+      return;
+    }
+
     const success = game?.leave(interaction.member);
 
     if (success) {
