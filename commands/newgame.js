@@ -22,13 +22,15 @@ const slashNewGame = {
 
     const game = new Game(guild, channel);
     interaction.client.game = game;
+    console.log(`Creating new Game from command`, interaction.id);
     
     game.start();
 
     game.join(interaction.member);
 
+    game.origin = interaction.id;
     const newEmbed = inviteEmbed(interaction);
-    const row = inviteButtons(game);
+    const row = inviteButtons(interaction);
 
     await interaction.reply({
       components: [row],

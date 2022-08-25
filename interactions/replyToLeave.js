@@ -4,12 +4,17 @@ const inviteButtons = require('../components/inviteButtons');
 const replyToLeave = {
   name: 'replyToLeave',
   async execute(interaction) {
+    const inviteMessage = interaction.message;
+    const inviteCommand = inviteMessage.interaction;
+    console.log(`Clicked leave button from message from command`, inviteCommand.id);
+
+
     const game = interaction.client.game;
     const success = game?.leave(interaction.member);
 
     if (success) {
       const newEmbed = inviteEmbed(interaction);
-      const newButtons = inviteButtons(game);
+      const newButtons = inviteButtons(interaction);
   
       await interaction.update({ components: [newButtons], embeds: [newEmbed] });
     } else {

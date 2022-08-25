@@ -6,13 +6,15 @@ const buttonLeaveGame = new ButtonBuilder()
   .setLabel('Leave')
   .setStyle(ButtonStyle.Secondary)
 
-const row = (game) => {
+const row = (interaction) => {
+  const game = interaction.client.game;
+
   const current = game?.players.size;
   const min = config.rules.min_group_size || 2;
   const max = config.rules.max_group_size || 4;
 
   const buttonJoinNewGame = new ButtonBuilder()
-    .setCustomId(`replyToJoin/${game.latestInvite}`)
+    .setCustomId(`replyToJoin/${interaction.id}`)
     .setLabel('Join')
     .setStyle(ButtonStyle.Primary);
 
