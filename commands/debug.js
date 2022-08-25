@@ -22,14 +22,10 @@ module.exports = {
 
     game.start();
 
-    game.deal(interaction.member);
-
-    game.players.get(interaction.member).play(Cards.GUARD);
-    for (let [member, player] of game.players) {
-      console.log(member.nickname, [...player.hand].map(card => card.name));
-    }
-
-
-    await interaction.reply({ content: footer(game).text, ephemeral: true });
+    await interaction.reply({ content: `Starting game with: \n${
+      [...game.players].map(([member, player]) => {
+        return `${member.nickname}, holding ${player.hand.map(card => card.name)}`
+      }).join('\n')
+    }` });
   }
 };

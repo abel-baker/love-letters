@@ -23,8 +23,9 @@ class Player {
     return this.hand;
   }
   drawFrom(deck, count = 1) {
-    this.hand.push(...deck.draw(count));
-    return this.hand;
+    const drawn = deck.draw(count);
+    this.hand.push(...drawn);
+    return drawn;
   }
   play(card) {
     console.log(`${this.member.nickname} playing`, card.name);

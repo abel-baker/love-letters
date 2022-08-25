@@ -11,6 +11,7 @@ class Game {
     console.log(`Creating new game in ${this.address}`);
 
     this.new();
+    this.turnIndex = 0;
   }
 
   get address() {
@@ -40,8 +41,8 @@ class Game {
     console.log(`Setting aside ${this.aside.name}`);
 
     for (let [member, player] of this.players) {
-      player.draw(...this.deck.draw(1));
-      console.log(`${member.nickname}'s hand`, [...player.hand].map(card => card.name));
+      this.deal(member, 1);
+      // console.log(`${member.nickname}'s hand`, [...player.hand].map(card => card.name));
     }
   }
 
@@ -68,8 +69,9 @@ class Game {
     return this.aside;
   }
   deal(member, count = 1) {
-    this.players.get(member).drawFrom(this.deck, count);
-    console.log(`Dealing ${count} cards to ${member.nickname}`, [...this.players.get(member).hand].map(card => card.name));
+    const dealt = this.players.get(member).drawFrom(this.deck, count);
+    console.log(`Dealing ${count} cards to ${member.nickname}:`, dealt.map(card => card.name));
+    return dealt;
   }
 
 
@@ -125,6 +127,17 @@ class Game {
       this.players.set(queuedMember, new Player(member));
     }
     this.queueJoin = new Set();
+  }
+
+  currentPlayer() {
+    this.turnIndex = this.turnIndex % this.players.size;
+    const member = [...this.players.keys()][this.turnIndex];
+    const player = this.players.get(member);
+    return [member, player];
+  }
+  nextPlayer() {
+    this.turnIndex++;
+    return this.currentPlayer();
   }
 
 }
