@@ -22,7 +22,8 @@ const onInteractionCreate = {
 
       try {
         // Process the button.
-        const action = interaction.client.interactions.get(interaction.customId);
+        const id = interaction.customId.split('/')[0];
+        const action = interaction.client.interactions.get(id);
         await action(interaction);
   
         return;
