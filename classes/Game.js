@@ -15,7 +15,7 @@ class Game {
   }
 
   get address() {
-    return `${this.guild.name}[${this.guild.id}]#${this.channel.name}[${this.channel.id}]`;
+    return `${this.guild.name}[${this.guild.id}]-${this.channel.name}[${this.channel.id}]`;
   }
 
 
@@ -35,14 +35,11 @@ class Game {
   start() {
     this.status = 'active';
 
-    console.log(`Now playing: ${[...this.players.keys()].map(member => member.nickname).join(', ')}`);
-
     this.setAside();
     console.log(`Setting aside ${this.aside.name}`);
 
     for (let [member, player] of this.players) {
       this.deal(member, 1);
-      // console.log(`${member.nickname}'s hand`, [...player.hand].map(card => card.name));
     }
   }
 
@@ -70,7 +67,6 @@ class Game {
   }
   deal(member, count = 1) {
     const dealt = this.players.get(member).drawFrom(this.deck, count);
-    console.log(`Dealing ${count} cards to ${member.nickname}:`, dealt.map(card => card.name));
     return dealt;
   }
 
@@ -79,8 +75,6 @@ class Game {
 
   join(member) {
     try {
-      // if (this.players.size >= config.rules.max_group_size) return false; // add to queue instead
-
       if (this.players.has(member)) {
         if (config.debug) {
           const fakeMember = { ...member, nickname: `fake ${member.nickname}` };

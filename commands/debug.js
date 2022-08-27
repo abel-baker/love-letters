@@ -10,23 +10,22 @@ module.exports = {
     .setDescription('Debug the game of Love Letters.'),
   async execute(interaction) {
     const client = interaction.client;
-    const guild = interaction.guild;
-    const channel = interaction.channel;
+    const { guild, channel } = interaction;
+    const address = `${guild}-${channel}`;
 
-    console.log('Verify: ', await Verify.GameExists(client), await Verify.GameActive(client));
+    console.log('Verify: ', await Verify.GameExists(client, address), await Verify.GameActive(client, address));
 
     // if (await Verify.GameExists(client)) console.log(`Game verified with auth`);
     // else console.log(`No game verified with auth`);
 
     const game = new Game(guild, channel);
-    client.game = game;
+    client.games.set(address, game);
 
-    console.log('Verify: ', await Verify.GameExists(client), await Verify.GameActive(client));
-
-    // if (await Verify.GameExists(client)) console.log(`Game verified with auth`);
-    // else console.log(`No game verified with auth`);
+    // console.log('Verify: ', await Verify.GameExists(client), await Verify.GameActive(client));
 
     // Start and join game with me and two fake sweets william
+    const member = interaction.member;
+    console.log('sweet william: ', member);
     game.join(interaction.member);
     game.join(interaction.member);
     game.join(interaction.member);
@@ -36,7 +35,7 @@ module.exports = {
     const embeds = [startEmbed(interaction)];
     const components = [optionsButtons()]
 
-    console.log('Verify: ', await Verify.GameExists(client), await Verify.GameActive(client));
+    // console.log('Verify: ', await Verify.GameExists(client), await Verify.GameActive(client));
 
     // if (await Verify.GameExists(client)) console.log(`Game verified with auth`);
     // else console.log(`No game verified with auth`);

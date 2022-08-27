@@ -1,17 +1,19 @@
 const { Verify } = require('../utils/check');
-const inviteEmbed = require('../components/inviteEmbed');
-const inviteButtons = require('../components/inviteButtons');
+const inviteEmbed = require('../components/invite/inviteEmbed');
+const inviteButtons = require('../components/invite/inviteButtonsRow');
 const expiredEmbed = require('../components/expiredEmbed');
 
 const replyToJoin = {
   name: 'replyToJoin',
   async execute(interaction) {
-    const client = interaction.client;
-    const game = client.game;
+    const { client, guild, channel } = interaction;
+    const address = `${guild}-${channel}`;
+    const game = client.games.get(address);
 
     const inviteMessage = interaction.message;
     const inviteCommand = inviteMessage.interaction;
     console.log(`Clicked join button from message from command`, inviteCommand.id);
+    
     if (inviteCommand.id !== game.origin) {
       console.log(`Origin mismatch`, game.origin);
 
@@ -19,16 +21,7 @@ const replyToJoin = {
       return;
     }
     
-    else console.log(`Origin match`, game.origin);
-
-    // console.log(`Replying to invite ${interaction.customId}`);
-    // const id = interaction.customId.split('/')[1];
-
-    // console.log(`Latest invite ${game.latestInvite.id}`, id);
-    // if (game.latestInvite.id !== id) {
-    //   console.log(`invite id mismatch`);
-    // }
-    
+    else console.log(`Origin match`, game.origin);    
 
     if (!Verify.GameExists(client)) {
       await interaction.reply({ content: `Doesn't look like there is a game afoot`, ephemeral: true });

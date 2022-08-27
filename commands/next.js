@@ -8,23 +8,22 @@ module.exports = {
     .setName('next')
     .setDescription('Debug the next step of Love Letters.'),
   async execute(interaction) {
-    const client = interaction.client;
+    const { client, guild, channel } = interaction;
+    const address = `${guild}-${channel}`;
 
-    if (!await Verify.GameActive(client)) {
+
+    if (!await Verify.GameActive(client, address)) {
       await interaction.reply({ content: `No game or no game active`, ephemeral: true });
       return;
     }
 
-    const game = client.game;
+    const game = client.games.get(address);
     game.advancePlayer();
 
     let index = game.turnIndex % game.players.size;
     const [activeMember, activePlayer] = game.currentPlayer();
-    console.log(`Active member`, index, activeMember?.nickname);
 
-    console.log(activeMember.nickname, [...activePlayer.hand].map(card => card.name));
-
-    const matchActiveMember = await Verify.MemberIsCurrentPlayer(client, interaction.member);
+    const matchActiveMember = await Verify.MemberIsCurrentPlayer(client, address, interaction.member);
 
     const embeds = [nextTurnEmbed(interaction)];
     const components = [optionsButtons(matchActiveMember)];

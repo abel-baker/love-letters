@@ -4,13 +4,12 @@ const playButtons = require('../components/playButtons');
 const showHand = {
   name: 'showHand',
   async execute(interaction) {
-    console.log(`Clicked show hand button`);
-
-    const client = interaction.client;
-    const game = client.game;
+    const { client, guild, channel } = interaction;
+    const address = `${guild}-${channel}`;
+    const game = client.games.get(address);
 
     // Verify member is playing
-    if (!await Verify.MemberIsInGame(client, interaction.member)) {
+    if (!await Verify.MemberIsInGame(client, address, interaction.member)) {
       await interaction.reply({ content: `Doesn't look like you are playing this game`, ephemeral: true });
       return;
     }
@@ -18,9 +17,9 @@ const showHand = {
     // const isCurrentPlayer = await Verify.MemberIsCurrentPlayer;
 
     const hand = game.players.get(interaction.member).hand;
-    const components = playButtons(hand, await Verify.MemberIsCurrentPlayer(client, interaction.member));
+    const components = playButtons(hand, await Verify.MemberIsCurrentPlayer(client, address, interaction.member));
 
-    await interaction.reply({ components: [components], content: `Your hand contains  ${hand.map(card => card.props.label).join(' &  ')}.  You ${await Verify.MemberIsCurrentPlayer(client, interaction.member)? `are` : `are not`} the current player.`, ephemeral: true });
+    await interaction.reply({ components: [components], content: `Your hand contains  ${hand.map(card => card.props.label).join(' &  ')}.  You ${await Verify.MemberIsCurrentPlayer(client, address, interaction.member)? `are` : `are not`} the current player.`, ephemeral: true });
   }
 }
 

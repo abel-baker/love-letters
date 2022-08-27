@@ -11,47 +11,49 @@
 
 // possibly, the dealer (or next person to deal);
 const Verify = {
-  async GameExists(client) {
+  async GameExists(client, address) {
     const out = ['Verifying game exists: '];
     
-    const check = (client.game ? true : false);
+    const check = (client.games.has(address) ? true : false);
     out.push(check);
     
-    console.log(out);
+    // console.log(out);
     return check;
   },
-  async GameActive(client) {
+  async GameActive(client, address) {
     const out = ['Verifying game is active: '];
-    
-    const status = client.game?.status;
-    const check = (client.game ? true : false) && status === 'active';
+    const game = client.games.get(address);
+
+    const status = game?.status;
+    const check = (game? true : false) && status === 'active';
     out.push(check);
 
-    console.log(out);
+    // console.log(out);
     return check;
   },
 
-  async MemberIsInGame(client, member) {
-    if (!await this.GameExists(client)) return false;
+  async MemberIsInGame(client, address, member) {
+    if (!await this.GameExists(client, address)) return false;
     
     const out = [`Verifying member ${member.nickname} is in game: `];
-    const game = client.game;
+    const game = client.games.get(address);
+    
     const check = game.isPlaying(member);
     out.push(check);
 
-    console.log(out);
+    // console.log(out);
     return check;
   },
-  async MemberIsCurrentPlayer(client, member) {
-    if (!await this.MemberIsInGame(client, member)) return false;
+  async MemberIsCurrentPlayer(client, address, member) {
+    if (!await this.MemberIsInGame(client, address, member)) return false;
 
     const out = [`Verifying member ${member.nickname} is current player: `];
-    const game = client.game;
+    const game = client.games.get(address);
     const [currentMember, currentPlayer] = game.currentPlayer();
     const check = member === currentMember;
     out.push(check);
 
-    console.log(out);
+    // console.log(out);
     return check;
   }
 }

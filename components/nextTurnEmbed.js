@@ -1,7 +1,10 @@
 const config = require('../config.json');
 
 const embed = (interaction) => {
-  const game = interaction.client.game;
+  const { client, guild, channel } = interaction;
+  const address = `${guild}-${channel}`;
+  const game = client.games.get(address);
+  
   const [currentMember, currentPlayer] = game.currentPlayer();
   const nextMember = game.nextPlayer();
 

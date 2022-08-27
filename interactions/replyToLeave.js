@@ -1,5 +1,5 @@
-const inviteEmbed = require('../components/inviteEmbed');
-const inviteButtons = require('../components/inviteButtons');
+const inviteEmbed = require('../components/invite/inviteEmbed');
+const inviteButtons = require('../components/invite/inviteButtonsRow');
 const expiredEmbed = require('../components/expiredEmbed');
 
 const replyToLeave = {
@@ -9,7 +9,9 @@ const replyToLeave = {
     const inviteCommand = inviteMessage.interaction;
     console.log(`Clicked leave button from message from command`, inviteCommand.id);
 
-    const game = interaction.client.game;
+    const { client, guild, channel } = interaction;
+    const address = `${guild}-${channel}`;
+    const game = client.games.get(address);
 
     if (!game?.origin || inviteCommand.id !== game?.origin) {
       console.log(`Origin mismatch`, game?.origin);

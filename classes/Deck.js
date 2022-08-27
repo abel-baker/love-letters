@@ -1,5 +1,5 @@
 const config = require('../config.json');
-const { Card, Cards } = require('./Card');
+const { Cards } = require('./Card');
 
 const standardDeck = [];
 

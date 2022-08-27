@@ -5,7 +5,10 @@ module.exports = {
     .setName('join')
     .setDescription('Join the game of Love Letters.'),
   async execute(interaction) {
-    const game = interaction.client.game;
+    const { guild, channel } = interaction;
+    const address = `${guild}-${channel}`;
+
+    const game = interaction.clients.get(address);
 
     // Confirm a game is running
     if (!game || game?.status === 'inactive') {

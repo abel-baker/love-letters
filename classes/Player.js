@@ -28,7 +28,6 @@ class Player {
     return drawn;
   }
   play(card) {
-    console.log(`${this.member.nickname} playing`, card.name);
     if (this.hand.includes(card)) {
       // Remove and return card
       const index = this.hand.indexOf(card);

@@ -1,22 +1,16 @@
-const inviteEmbed = require('../components/inviteEmbed');
-const inviteButtons = require('../components/inviteButtons');
-const verifyGameExists = require('../utils/check');
+const { Verify } = require('../utils/check');
 
 const replyToBegin = {
   name: 'replyToBegin',
   async execute(interaction) {
-    if (!verifyGameExists(interaction)) {
+    if (!Verify.GameExists(interaction.client)) {
       await interaction.reply({ content: `Doesn't look like there is a game afoot`, ephemeral: true });
       return;
     }
 
-    const game = interaction.client.game;
-    // const success = game?.leave(interaction.member);
-
-    // const newEmbed = inviteEmbed(interaction);
-    // const newButtons = inviteButtons(game);
-
-    // await interaction.update({ components: [], embeds: [newEmbed] });
+    const { client, guild, channel } = interaction;
+    const address = `${guild}-${channel}`;
+    const game = client.games.get(address);
 
     game.start();
   }

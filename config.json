@@ -2,6 +2,7 @@
 	"prefix": "!",
 
 	"debug": true,
+	"allow_multiple_games_per_guild": false,
 
 	"embed_color": 13632088,
 	"embed_color_draw": 10726059,

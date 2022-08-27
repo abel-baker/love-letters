@@ -1,19 +1,23 @@
+const config = require('../../config.json');
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const config = require('../config.json');
-
-const buttonLeaveGame = new ButtonBuilder()
-  .setCustomId('replyToLeave')
-  .setLabel('Leave')
-  .setStyle(ButtonStyle.Secondary)
 
 const row = (interaction) => {
-  const game = interaction.client.game;
+  const { client, guild, channel } = interaction;
+  const address = `${guild}-${channel}`;
+  const game = client.games.get(address);
 
   const current = game?.players.size;
   const min = config.rules.min_group_size || 2;
   const max = config.rules.max_group_size || 4;
 
-  const buttonJoinNewGame = new ButtonBuilder()
+  // Button to leave queue
+  const buttonLeaveQueue = new ButtonBuilder()
+    .setCustomId('replyToLeave')
+    .setLabel('Leave')
+    .setStyle(ButtonStyle.Secondary)
+
+  // Button to join queue--Label reflects position in the queue
+  const buttonJoinQueue = new ButtonBuilder()
     .setCustomId(`replyToJoin/${interaction.id}`)
     .setLabel('Join')
     .setStyle(ButtonStyle.Primary);
@@ -21,11 +25,11 @@ const row = (interaction) => {
   // Change 'join' to 'join queue' function at maximum
   const atMax = current && current >= max;
   if (atMax) {
-    buttonJoinNewGame
+    buttonJoinQueue
       .setLabel('Join queue')
       .setStyle(ButtonStyle.Secondary);
   } else {
-    buttonJoinNewGame
+    buttonJoinQueue
       .setEmoji('💌');
   }
   
@@ -45,7 +49,7 @@ const row = (interaction) => {
   }
 
   return new ActionRowBuilder()
-    .addComponents([buttonJoinNewGame, buttonLeaveGame, buttonBeginNewGame]);
+    .addComponents([buttonJoinQueue, buttonLeaveQueue, buttonBeginNewGame]);
 }
 
 module.exports = row;

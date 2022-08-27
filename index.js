@@ -46,5 +46,9 @@ for (const file of eventFiles) {
 }
 
 
+// Create Collection to find Games by their guild-channel address
+client.games = new Collection();
+
+
 // Login to Discord with client's token
 client.login(TOKEN);
