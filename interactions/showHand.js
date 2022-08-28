@@ -14,8 +14,6 @@ const showHand = {
       return;
     }
 
-    // const isCurrentPlayer = await Verify.MemberIsCurrentPlayer;
-
     const hand = game.players.get(interaction.member).hand;
     const components = playButtons(hand, await Verify.MemberIsCurrentPlayer(client, address, interaction.member));
 

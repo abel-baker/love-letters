@@ -5,7 +5,7 @@ const standardDeck = [];
 
 for (const card in config.cards) {
   for (let i = 0; i < config.cards[card].deck_quantity; i++) {
-    standardDeck.push(Cards[card.toUpperCase()]);
+    standardDeck.unshift(Cards[card.toUpperCase()]);
   }
 }
 

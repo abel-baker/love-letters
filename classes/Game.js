@@ -15,7 +15,7 @@ class Game {
   }
 
   get address() {
-    return `${this.guild.name}[${this.guild.id}]-${this.channel.name}[${this.channel.id}]`;
+    return `${this.guild.id}-${this.channel.id}]`;
   }
 
 
@@ -39,7 +39,7 @@ class Game {
     console.log(`Setting aside ${this.aside.name}`);
 
     for (let [member, player] of this.players) {
-      this.deal(member, 1);
+      this.deal(player, 1);
     }
   }
 
@@ -55,8 +55,8 @@ class Game {
     this.deck.shuffle();
 
     // Iterate through Players and clear their hands
-    for (const member of this.players) {
-      this.players.get(member).clearHand();
+    for (const [member, player] of this.players) {
+      player.clearHand();
     }
 
     this.history = new Set();
@@ -65,8 +65,8 @@ class Game {
     this.aside = this.deck.pop();
     return this.aside;
   }
-  deal(member, count = 1) {
-    const dealt = this.players.get(member).drawFrom(this.deck, count);
+  deal(player, count = 1) {
+    const dealt = player.drawFrom(this.deck, count);
     return dealt;
   }
 
@@ -74,22 +74,17 @@ class Game {
   ///// PLAYER FUNCTIONS /////
 
   join(member) {
-    try {
-      if (this.players.has(member)) {
-        if (config.debug) {
-          const fakeMember = { ...member, nickname: `fake ${member.nickname}` };
-          this.players.set(fakeMember, new Player(member));
-          return true;
-        }
-        return false;
+    if (this.players.has(member)) {
+      if (config.debug) {
+        const fakeMember = { ...member, nickname: `fake ${member.nickname}` };
+        this.players.set(fakeMember, new Player(member));
+        return true;
       }
-  
-      this.players.set(member, new Player(member));
-      return true;
-    } catch(err) {
-      console.log('There was an error adding member to game', member, err);
       return false;
     }
+
+    this.players.set(member, new Player(member));
+    return true;
   }
   leave(member) {
     // If the Game's list of players contains the player in question, remove them.
@@ -105,8 +100,7 @@ class Game {
   }
 
   playing() {
-    return [...this.players.keys()].map(member => member.nickname).join(', ');
-    // return this.players;
+    return this.players.map(([member, player]) => player);
   }
   refreshPlayers() {
     // Remove any players who left before this round
@@ -123,22 +117,23 @@ class Game {
     this.queueJoin = new Set();
   }
 
-  isPlaying(member) {
-    return this.players.has(member);
+  isPlaying(query) {
+    // Allow either a GuildMember or a Player as query
+    return this.players.has(query) || [...this.players.values()].includes(query);
   }
+
   currentPlayer() {
     this.turnIndex = this.turnIndex % this.players.size;
-    const member = [...this.players.keys()][this.turnIndex];
-    const player = this.players.get(member);
-    return [member, player];
+    const player = [...this.players.values()][this.turnIndex];
+    return player;
   }
   nextPlayer() {
     const nextTurnIndex = (this.turnIndex + 1) % this.players.size;
-    const nextMember = [...this.players.keys()][nextTurnIndex];
-    return nextMember;
+    const nextPlayer = [...this.players.values()][nextTurnIndex];
+    return nextPlayer;
   }
   advancePlayer() {
-    this.turnIndex++;
+    this.turnIndex += 1;
   }
 
 }

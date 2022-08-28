@@ -11,7 +11,7 @@ class Player {
     this.history = new Array();
   }
 
-  getDisplayName() {
+  get displayName() {
     return this.member.displayName;
   }
 

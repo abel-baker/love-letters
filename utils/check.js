@@ -16,8 +16,7 @@ const Verify = {
     
     const check = (client.games.has(address) ? true : false);
     out.push(check);
-    
-    // console.log(out);
+  
     return check;
   },
   async GameActive(client, address) {
