@@ -33,7 +33,7 @@ const replyToJoin = {
       const newEmbed = inviteEmbed(interaction);
       const newButtons = inviteButtons(interaction);
       
-      await interaction.channel.send({ content: `:love_letter: **${interaction.member.displayName}** accepted the invite!` });
+      await interaction.channel.send({ content: `:love_letter: **${interaction.member.nickname}** accepted the invite!` });
       await interaction.update({ embeds: [newEmbed], components: [newButtons] });
     } else {
       await interaction.reply({ content: `Unable to join; is there a game and are you already playing it?`, ephemeral: true });

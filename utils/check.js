@@ -48,11 +48,10 @@ const Verify = {
 
     const out = [`Verifying member ${member.nickname} is current player: `];
     const game = client.games.get(address);
-    const [currentMember, currentPlayer] = game.currentPlayer();
-    const check = member === currentMember;
+    const check = game.players.get(member) === game.currentPlayer();
     out.push(check);
 
-    // console.log(out);
+    console.log(out);
     return check;
   }
 }

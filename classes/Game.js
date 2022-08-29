@@ -15,7 +15,7 @@ class Game {
   }
 
   get address() {
-    return `${this.guild.id}-${this.channel.id}]`;
+    return `${this.guild.id}-${this.channel.id}`;
   }
 
 
@@ -77,7 +77,7 @@ class Game {
     if (this.players.has(member)) {
       if (config.debug) {
         const fakeMember = { ...member, nickname: `fake ${member.nickname}` };
-        this.players.set(fakeMember, new Player(member));
+        this.players.set(fakeMember, new Player(fakeMember));
         return true;
       }
       return false;
@@ -100,7 +100,8 @@ class Game {
   }
 
   playing() {
-    return this.players.map(([member, player]) => player);
+    const playing = Array.from(this.players, ([key, value]) => value);
+    return playing;
   }
   refreshPlayers() {
     // Remove any players who left before this round

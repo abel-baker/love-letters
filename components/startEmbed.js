@@ -1,12 +1,15 @@
 const config = require('../config.json');
+const prettyJoin = require('../utils/prettyJoin');
 
 const embed = (interaction) => {
   const { client, guild, channel } = interaction;
   const address = `${guild}-${channel}`;
   const game = client.games.get(address);
 
-  const [startingMember, startingPlayer] = game.currentPlayer();
-  const nextMember = game.nextPlayer();
+  const startingPlayer = game.currentPlayer();
+  const nextPlayer = game.nextPlayer();
+  
+  const playing = prettyJoin(game.playing().map(player => `**${player.nickname}**`));
 
   const out = {
     color: config.embed_color,
@@ -17,18 +20,15 @@ const embed = (interaction) => {
       iconURL: config.bot_avatar_url
     },
 
+
     // title: `You're invited! :love_letter:`,
-    description: `Players ${[...game.players].map(([member, player]) => `**${member.nickname}**`).join(', ')} have been dealt 1 card each.  The starting player will be ${startingMember}.
+    description: `Players ${playing} have been dealt 1 card each.  The starting player will be ${startingPlayer.displayName}.
     
     Let the game of :love_letter: **Love Letters** begin!`,
 
-    // ${[...game.players].map(([member, player]) => {
-    //   return `${member.nickname}, holding ${player.hand.map(card => card.name)}`
-    // }).join('\n')}`,
-
     footer: {
-      icon_url: startingMember.user.displayAvatarURL(),
-      text: `Next up: ${nextMember.nickname}`
+      icon_url: startingPlayer.member.user.displayAvatarURL(),
+      text: `Next up: ${nextPlayer.nickname}`
     }
   }
 

@@ -12,7 +12,10 @@ class Player {
   }
 
   get displayName() {
-    return this.member.displayName;
+    return this.member.toString();
+  }
+  get nickname() {
+    return this.member.nickname;
   }
 
   clearHand() {
