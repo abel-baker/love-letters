@@ -1,4 +1,4 @@
-const InviteComponents = require('../components/invite');
+const { Embed, Footer, Buttons } = require('../components/invite');
 
 class Invite {
   // Accepts and interaction object
@@ -10,6 +10,8 @@ class Invite {
 
     this.creator = interaction.member;
     this.active = false;
+
+    this.createdAt = new Date();
   }
 
   get address() {
@@ -18,6 +20,12 @@ class Invite {
   // The initial reply to this interaction
   get message() {
     return interaction.fetchReply();
+  }
+
+  deactivate() {
+    const priorState = this.active;
+    this.active = false;
+    return priorState;
   }
 
   deploy() {

@@ -30,10 +30,10 @@ const slashNewGame = {
     const address = `${guild}-${channel}`;
 
     const game = new Game(guild, channel);
+    game.lastInvitation = invite;
 
     // set game to client map
     client.games.set(address, game);
-    // interaction.client.game = game;
 
     console.log(`Creating new Game from command`, interaction.id);
     

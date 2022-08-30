@@ -12,7 +12,7 @@ class Player {
   }
 
   get displayName() {
-    return this.member.toString();
+    return this.member.nickname;
   }
   get nickname() {
     return this.member.nickname;

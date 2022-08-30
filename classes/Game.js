@@ -12,6 +12,9 @@ class Game {
 
     this.new();
     this.turnIndex = 0;
+
+    this.pastInvitations = [];
+    this.lastInvitation;
   }
 
   get address() {
@@ -31,6 +34,7 @@ class Game {
 
     this.resetCards();
   }
+
 
   start() {
     this.status = 'active';

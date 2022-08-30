@@ -12,7 +12,7 @@ const row = (interaction) => {
 
   // Button to leave queue
   const buttonLeaveQueue = new ButtonBuilder()
-    .setCustomId('replyToLeave')
+    .setCustomId(`replyToLeave/${interaction.id}`)
     .setLabel('Leave')
     .setStyle(ButtonStyle.Secondary)
 
@@ -34,7 +34,7 @@ const row = (interaction) => {
   }
   
   const buttonBeginNewGame = new ButtonBuilder()
-    .setCustomId('replyToBegin')
+    .setCustomId(`replyToBegin/${interaction.id}`)
     .setLabel('Play!')
     .setStyle(ButtonStyle.Secondary)
     .setDisabled(true);

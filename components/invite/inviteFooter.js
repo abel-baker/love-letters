@@ -9,7 +9,7 @@ const footer = (game) => {
 
   const playerQueue = game.playing().map(player => player.displayName);
   const inGame = prettyJoin(playerQueue.slice(0, max));
-  const queued = prettyJoin(playerQueue.slice(max, playerQueue.displayName));
+  const queued = prettyJoin(playerQueue.slice(max, playerQueue.length));
 
   const queueString = queued.length > 0? `. Queued: ${queued}` : ``;
 

@@ -1,6 +1,6 @@
 const inviteEmbed = require('../components/invite/inviteEmbed');
 const inviteButtons = require('../components/invite/inviteButtonsRow');
-const expiredEmbed = require('../components/expiredEmbed');
+const expiredEmbed = require('../components/invite/expiredEmbed');
 
 const replyToLeave = {
   name: 'replyToLeave',
