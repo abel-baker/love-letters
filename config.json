@@ -10,6 +10,7 @@
 	"bot_avatar_url" : "https://cdn.discordapp.com/avatars/596154206432264203/5ea9563762981dac308059108ce734fd.png",
 
 	"rules": {
+		"min_group_size": 2,
 		"max_group_size": 4,
 		"set_aside_on_two_players": true,
 		"limit_hand_size": true,

@@ -146,24 +146,27 @@ class Game {
 
   /* here */
 
+  // returns an array of members with a corresponding Player object
   playing() {
-    const playing = Array.from(this.players, ([key, value]) => value);
+    const playing = Array.from(this.players, player => player.member);
     return playing;
   }
-  refreshPlayers() {
-    // Remove any players who left before this round
-    for (let queuedMember of this.queueLeave) {
-      this.players.delete(queuedMember);
-    }
-    this.queueLeave = new Set();
 
-    // Add any players who joined during a hand
-    for (let queuedMember of this.queueJoin) {
-      // future: lookup member for existing Player object, or check db, and use that instead
-      this.players.set(queuedMember, new Player(member));
-    }
-    this.queueJoin = new Set();
-  }
+  // not needed anymore since the leave queue is removed 
+  // refreshPlayers() {
+  //   // Remove any players who left before this round
+  //   for (let queuedMember of this.queueLeave) {
+  //     this.players.delete(queuedMember);
+  //   }
+  //   this.queueLeave = new Set();
+
+  //   // Add any players who joined during a hand
+  //   for (let queuedMember of this.queueJoin) {
+  //     // future: lookup member for existing Player object, or check db, and use that instead
+  //     this.players.set(queuedMember, new Player(member));
+  //   }
+  //   this.queueJoin = new Set();
+  // }
 
   isPlaying(query) {
     // Allow either a GuildMember or a Player as query
@@ -182,12 +185,14 @@ class Game {
 
   currentPlayer() {
     this.turnIndex = this.turnIndex % this.players.size;
-    const player = [...this.players.values()][this.turnIndex];
+    // const player = [...this.players.values()][this.turnIndex];
+    const player = Array.from(this.playing)[this.turnIndex];
     return player;
   }
   nextPlayer() {
     const nextTurnIndex = (this.turnIndex + 1) % this.players.size;
-    const nextPlayer = [...this.players.values()][nextTurnIndex];
+    // const nextPlayer = [...this.players.values()][nextTurnIndex];
+    const nextPlayer = Array.from(this.playing)[nextTurnIndex];
     return nextPlayer;
   }
   advancePlayer() {

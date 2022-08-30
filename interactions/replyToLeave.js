@@ -20,7 +20,7 @@ const replyToLeave = {
       return;
     }
 
-    const success = game?.leave(interaction.member);
+    const success = game?.leaveQueue(interaction.member);
 
     if (success) {
       const newEmbed = inviteEmbed(interaction);

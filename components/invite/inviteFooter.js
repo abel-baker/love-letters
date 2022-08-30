@@ -2,20 +2,28 @@ const config = require('../../config.json');
 const prettyJoin = require('../../utils/prettyJoin');
 
 const footer = (game) => {
-  const current = game.players.size || 0;
-  const max = config.rules.max_group_size || 4;
+  const current = game.playerQueue.size || 0;
+  // const queuedCount = game.playerQueue.size || 0;
+  // const max = config.rules.max_group_size || 4;
+  const groupSize = config.rules.max_group_size || 4;
 
-  const countString = `(${current}/${max})${current === 0? '' : ': '}`
+  const countString = `(${current}/${groupSize})${current === 0? '' : ': '}`
 
-  const playerQueue = game.playing().map(player => player.displayName);
-  const inGame = prettyJoin(playerQueue.slice(0, max));
-  const queued = prettyJoin(playerQueue.slice(max, playerQueue.length));
+  console.log(game.playerQueue);
+  const memberQueue = Array.from(game.playerQueue.keys());
+  console.log(memberQueue?.map(member => member.nickname));
+  
+  let queued;
+  console.log(`between`, )
+  if (memberQueue && memberQueue.length > groupSize) {
+    queued = prettyJoin(memberQueue.map(member => member.nickname).slice(groupSize, game.playerQueue.length));
+  }
 
-  const queueString = queued.length > 0? `. Queued: ${queued}` : ``;
+  const queueString = queued? `Queue: ${queued}` : ``;
 
   const out = {
     icon_url: config.bot_avatar_url,
-    text: `Currently playing ${countString}${prettyJoin(inGame)}${queueString}`
+    text: `${queueString}`
   }
 
   return out;
