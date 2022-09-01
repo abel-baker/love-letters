@@ -43,6 +43,15 @@ class Game {
     this.resetCards();
   }
 
+  // update invitations
+  processNewInvitation(invite) {
+    // put past used invites into an array that can be referenced/processed later
+    this.pastInvitations.push(this.lastInvitation);
+
+    // current invitation can be referenced to validate users clicking on the correct invitation
+    this.lastInvitation = invite;
+  }
+
 
   // begin hand
   start() {
@@ -51,10 +60,25 @@ class Game {
     this.setAside();
     console.log(`Setting aside ${this.aside.name}`);
 
+    const playersToAdd = Array.from(this.playerQueue.values()).slice(0, config.rules.max_group_size);
+    console.log(playersToAdd);
+    
+    // take the top of the queue and add them to the players group
+    // this.players.add(...Array.from(this.playerQueue.values()).slice(config.rules.max_group_size));
+    // this.players.add(...playersToAdd);
+    for (const player of playersToAdd) {
+      this.players.add(player);
+    }
+
+    console.log("Starting with players: ", this.players);
+
     for (let player of this.players) {
       this.deal(player, 1);
     }
+
   }
+
+
 
 
   ///// DECK FUNCTIONS /////
@@ -92,7 +116,10 @@ class Game {
     if (this.playerQueue.has(member)) {
       if (config.debug) {
         const fakeMember = { ...member, nickname: `fake ${member.nickname} ${this.playerQueue.size}`};
-        this.playerQueue.set(fakeMember, new Player(fakeMember));
+        const fakePlayer = new Player(fakeMember);
+        // console.log("Attempting to join", fakeMember, fakePlayer)
+        this.playerQueue.set(fakeMember, fakePlayer);
+        // console.log(this.playerQueue);
         return true;
       }
 
@@ -186,13 +213,13 @@ class Game {
   currentPlayer() {
     this.turnIndex = this.turnIndex % this.players.size;
     // const player = [...this.players.values()][this.turnIndex];
-    const player = Array.from(this.playing)[this.turnIndex];
+    const player = Array.from(this.players)[this.turnIndex];
     return player;
   }
   nextPlayer() {
     const nextTurnIndex = (this.turnIndex + 1) % this.players.size;
     // const nextPlayer = [...this.players.values()][nextTurnIndex];
-    const nextPlayer = Array.from(this.playing)[nextTurnIndex];
+    const nextPlayer = Array.from(this.players)[nextTurnIndex];
     return nextPlayer;
   }
   advancePlayer() {

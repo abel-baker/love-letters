@@ -30,7 +30,7 @@ const slashNewGame = {
     const address = `${guild}-${channel}`;
 
     const game = new Game(guild, channel);
-    game.lastInvitation = invite;
+    game.processNewInvitation(invite);
 
     // set game to client map
     client.games.set(address, game);

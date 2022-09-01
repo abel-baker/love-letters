@@ -21,7 +21,7 @@ module.exports = {
     game.advancePlayer();
 
     let index = game.turnIndex % game.players.size;
-    const [activeMember, activePlayer] = game.currentPlayer();
+    const activePlayer = game.currentPlayer();
 
     const matchActiveMember = await Verify.MemberIsCurrentPlayer(client, address, interaction.member);
 

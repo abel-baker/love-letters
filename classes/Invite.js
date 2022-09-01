@@ -17,7 +17,7 @@ class Invite {
   get address() {
     return { guildId, channelId };
   }
-  // The initial reply to this interaction
+  // The initial reply to (message created by) this interaction
   get message() {
     return interaction.fetchReply();
   }
