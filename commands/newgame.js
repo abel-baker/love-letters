@@ -11,25 +11,20 @@ const slashNewGame = {
     .setName('newgame')
     .setDescription('Begin a new game of Love Letters.'),
   async execute(interaction) {
+    const { client, guild, channel } = interaction;
+    const address = `${guild}-${channel}`;
+
     // Verify no ongoing game (or open invitation) in this channel
     // Verify unique ongoing game (or open invitation) in this guild, if not allowed
     //   config.allow_multiple_games_per_guild
 
-
-    const ongoingGame = interaction.client.game;
+    // const ongoingGame = interaction.client.game;
 
     // Confirm there is not already a game running elsewhere
-    if (!config.debug && ongoingGame?.status === 'active') {
-      await interaction.reply({ content: `There is already a game going on in ${ongoingGame.channel}.`, ephemeral: true });
-      return;
-    }
-
-    const invite = new Invite(interaction);
-
-    const { client, guild, channel } = interaction;
-    const address = `${guild}-${channel}`;
 
     const game = new Game(guild, channel);
+
+    const invite = new Invite(interaction);
     game.processNewInvitation(invite);
 
     // set game to client map
@@ -37,6 +32,7 @@ const slashNewGame = {
 
     console.log(`Creating new Game from command`, interaction.id);
     
+    // + this should actually happen after selecting to Play
     game.start();
 
     game.join(interaction.member);

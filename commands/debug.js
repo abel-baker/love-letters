@@ -9,8 +9,7 @@ module.exports = {
     .setName('debug')
     .setDescription('Debug the game of Love Letters.'),
   async execute(interaction) {
-    const client = interaction.client;
-    const { guild, channel } = interaction;
+    const { client, guild, channel } = interaction;
     const address = `${guild}-${channel}`;
 
     console.log('Verify: ', await Verify.GameExists(client, address), await Verify.GameActive(client, address));

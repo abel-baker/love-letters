@@ -10,37 +10,16 @@ class Game {
 
     console.log(`Creating new game in ${this.address}`);
 
-    this.new();
-    this.turnIndex = 0;
-
     this.pastInvitations = [];
     this.lastInvitation;
+
+    this.newRound();
+
+    this.status = 'setup';
   }
 
   get address() {
     return `${this.guild.id}-${this.channel.id}`;
-  }
-
-
-  new() {
-    this.status = 'inactive';
-
-    // map GuildMember -> Player
-    // these are the members (and corresponding created Players) who want to play next hand
-    // by default, players in a current hand are left in the queue so they can play next hand automatically
-    this.playerQueue = new Map();
-
-    // Player
-    // these are the Player objects who are currently in (or about to start; or just having left) a hand
-    this.players = new Set();
-
-    // set of GuildMember to add/create (map) or remove
-    // get rid of this--members can be queued instantly
-    this.queueJoin = new Set();
-    // get rid of this--members can be removed from the queue instantly
-    this.queueLeave = new Set();
-
-    this.resetCards();
   }
 
   // update invitations
@@ -52,6 +31,26 @@ class Game {
     this.lastInvitation = invite;
   }
 
+  /* Prepare the Game object to play a round.
+  *  Rather than put this in the constructor, 
+  *  separate it so the Game can play multiple rounds */
+  newRound() {
+    this.status = 'inactive';
+
+    // map GuildMember -> Player
+    // these are the members (and corresponding created Players) who want to play next hand
+    // by default, players in a current hand are left in the queue so they can play next hand automatically
+    this.playerQueue = new Map();
+
+    // Player
+    // these are the Player objects who are currently in (or about to start; or just having left) a hand
+    this.players = new Set();
+    this.turnIndex = 0;
+
+    this.resetCards();
+
+    // send new round message?
+  }
 
   // begin hand
   start() {
@@ -75,7 +74,6 @@ class Game {
     for (let player of this.players) {
       this.deal(player, 1);
     }
-
   }
 
 

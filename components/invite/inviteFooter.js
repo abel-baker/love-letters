@@ -7,8 +7,6 @@ const footer = (game) => {
   // const max = config.rules.max_group_size || 4;
   const groupSize = config.rules.max_group_size || 4;
 
-  const countString = `(${current}/${groupSize})${current === 0? '' : ': '}`
-
   console.log(game.playerQueue);
   const memberQueue = Array.from(game.playerQueue.keys());
   console.log(memberQueue?.map(member => member.nickname));
