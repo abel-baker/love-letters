@@ -3,23 +3,100 @@ const Player = require('./Player');
 const { Deck, standardDeck } = require('./Deck');
 const { Card } = require('./Card');
 
+/* Game flow:
+- Game is created by /newgame, status set to setup; ->
+- an Invite is created and assigned by /newgame, status set to invitation; 
+- Game begins by beginGame interaction, status set to starting; ->
+- possible ready check of some kind for the players;
+- a round is dealt to Players and turnIndex is set for one of them;
+- round start message is sent ("Let's go, it's sweet william's turn to draw a card"),
+  buttons are presented for drawCard (and others), status is drawing;
+- after drawing, buttons are presented to the player for playCard/cardtype, series of
+  "prompts" via button layouts for playing each card, status is playing;
+- card play executes, changing cards, changing hands, eliminating players,
+  etc., status is resolving (or similar);
+- end condition is checked such as empty deck, only one player remaining:
+  proceed if condition is met, otherwise increment turn index and move
+  to next player's draw phase;
+- after end condition, stop play and send summary/win message;
+*/
+
 class Game {
   constructor(guild, channel) {
+    this.status = 'setup';
+
     this.guild = guild;
     this.channel = channel;
 
-    console.log(`Creating new game in ${this.address}`);
+    // console.log(`Creating new game in ${this.address}`);
 
-    this.pastInvitations = [];
-    this.lastInvitation;
+    // map GuildMember -> Player
+    // these are the members (and corresponding created Players) who want to play next hand
+    // by default, players in a current hand are left in the queue so they can play next hand automatically
+    this.playerQueue = new Map();
 
-    this.newRound();
+    // this.pastInvitations = [];
+    // this.lastInvitation;
 
-    this.status = 'setup';
+    // this.newRound();
   }
 
   get address() {
     return `${this.guild.id}-${this.channel.id}`;
+  }
+  get currentPlayer() {
+    return this.currentPlayer();
+  }
+  get nextPlayer() {
+    return this.nextPlayer();
+  }
+
+  /* Prepare the Game object to play a game. */
+  beginGame() {
+    this.status = 'starting';
+    
+    // Player: these are the Player objects who are participating or will participate in a round
+    // This is constructed from the first x members in the Player queue, where x is the size of
+    // a group of players according to the rules.
+    this.players = new Set();
+    this.turnIndex = 0;
+    
+    // Take the top of the playerQueue (members who have opted to play) and add then to the round's
+    // group of Players
+    const playersToAdd = Array.from(this.playerQueue.values()).slice(0, config.rules.max_group_size);
+    for (const player of playersToAdd) {
+      this.players.add(player);
+    }
+
+    // await Ready check of some kind?
+
+    this.beginRound();
+  }
+  
+  /* Begin one round of play */
+  beginRound() {
+    this.status = 'dealing';
+
+    // Determine starting Player by some mechanism (won last hand, always the same Player, etc)
+    this.turnIndex = 0;
+
+    // Grab a new deck
+    this.deck = new Deck(...standardDeck);
+    this.deck.shuffle();
+
+    // Set one card aside each round
+    this.aside = this.deck.pop();
+
+    // Set three cards face-up in a two-person game
+    if (this.players.size === 2 && config.rules.set_aside_on_two_players) {
+      for (let i = 0; i < 3; i++) {
+        this.faceup.push(this.deck.pop());
+      }
+    }
+
+    // ...
+
+    // this.resetCards();
   }
 
   // update invitations
@@ -37,15 +114,8 @@ class Game {
   newRound() {
     this.status = 'inactive';
 
-    // map GuildMember -> Player
-    // these are the members (and corresponding created Players) who want to play next hand
-    // by default, players in a current hand are left in the queue so they can play next hand automatically
-    this.playerQueue = new Map();
 
-    // Player
-    // these are the Player objects who are currently in (or about to start; or just having left) a hand
-    this.players = new Set();
-    this.turnIndex = 0;
+
 
     this.resetCards();
 
