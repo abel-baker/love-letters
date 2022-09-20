@@ -10,18 +10,17 @@ const replyToJoin = {
     const address = `${guild}-${channel}`;
     const game = client.games.get(address);
 
-    const inviteMessage = interaction.message;
-    const inviteCommand = inviteMessage.interaction;
-    console.log(`Clicked join button from message from command`, inviteCommand.id);
+    // const inviteMessage = interaction.message;
+    // const inviteCommand = inviteMessage.interaction;
     
-    if (inviteCommand.id !== game.origin) {
-      console.log(`Origin mismatch`, game.origin);
+    // if (inviteCommand.id !== game.origin) {
+    //   console.log(`Origin mismatch`, game.origin);
 
-      await interaction.update({ components: [], embeds: [...interaction.message.embeds, expiredEmbed] });
-      return;
-    }
+    //   await interaction.update({ components: [], embeds: [...interaction.message.embeds, expiredEmbed] });
+    //   return;
+    // }
     
-    else console.log(`Origin match`, game.origin);    
+    // else console.log(`Origin match`, game.origin);    
 
     if (!Verify.GameExists(client)) {
       await interaction.reply({ content: `Doesn't look like there is a game afoot`, ephemeral: true });

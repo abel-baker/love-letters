@@ -6,15 +6,9 @@ const row = (interaction) => {
   const address = `${guild}-${channel}`;
   const game = client.games.get(address);
 
-  const current = game.players?.size;
-  const min = config.rules.min_group_size || 2;
-  const max = config.rules.max_group_size || 4;
-
-  // Button to leave queue
-  const buttonLeaveQueue = new ButtonBuilder()
-    .setCustomId(`replyToLeave/${interaction.id}`)
-    .setLabel('Leave')
-    .setStyle(ButtonStyle.Secondary)
+  // const current = game.players?.size;
+  // const min = config.rules.min_group_size || 2;
+  // const max = config.rules.max_group_size || 4;
 
   // Button to join queue--Label reflects position in the queue
   const buttonJoinQueue = new ButtonBuilder()
@@ -22,9 +16,21 @@ const row = (interaction) => {
     .setLabel('Join')
     .setStyle(ButtonStyle.Primary);
 
+  // Button to leave queue--Label deactivates if no one is in the queue
+  const buttonLeaveQueue = new ButtonBuilder()
+    .setCustomId(`replyToLeave/${interaction.id}`)
+    .setLabel('Leave')
+    .setStyle(ButtonStyle.Secondary)
+  
+  // Button to begin the game--Label activates when size conditions are met
+  const buttonBeginNewGame = new ButtonBuilder()
+    .setCustomId(`replyToBegin/${interaction.id}`)
+    .setLabel('Play!')
+    .setStyle(ButtonStyle.Secondary)
+    .setDisabled(true);
+
   // Change 'join' to 'join queue' function at maximum
-  const atMax = current && current >= max;
-  if (atMax) {
+  if (game.atMax) {
     buttonJoinQueue
       .setLabel('Join queue')
       .setStyle(ButtonStyle.Secondary);
@@ -32,16 +38,15 @@ const row = (interaction) => {
     buttonJoinQueue
       .setEmoji('💌');
   }
-  
-  const buttonBeginNewGame = new ButtonBuilder()
-    .setCustomId(`replyToBegin/${interaction.id}`)
-    .setLabel('Play!')
-    .setStyle(ButtonStyle.Secondary)
-    .setDisabled(true);
+
+  // Disable 'leave' button if there's no one to leave
+  if (game.playerQueue.size === 0) {
+    buttonLeaveQueue
+      .setDisabled(true);
+  }
 
   // Enable Play button at required minimum
-  const atMin = current && current >= min;
-  if (atMin) {
+  if (game.atMin) {
     buttonBeginNewGame
       .setStyle(ButtonStyle.Success)
       .setDisabled(false)

@@ -35,6 +35,8 @@ class Game {
     // by default, players in a current hand are left in the queue so they can play next hand automatically
     this.playerQueue = new Map();
 
+    this.players = new Set();
+
     // this.pastInvitations = [];
     // this.lastInvitation;
 
@@ -43,6 +45,17 @@ class Game {
 
   get address() {
     return `${this.guild.id}-${this.channel.id}`;
+  }
+  // get playerList() {
+  //   return this.players
+  // }
+  get atMin() {
+    const groupSize = config.rules.min_group_size;
+    return this.playerQueue.size >= groupSize;
+  }
+  get atMax() {
+    const groupLimit = config.rules.max_group_size;
+    return this.playerQueue.size >= groupLimit;
   }
   get currentPlayer() {
     return this.currentPlayer();
@@ -84,8 +97,12 @@ class Game {
     this.deck = new Deck(...standardDeck);
     this.deck.shuffle();
 
+    // Create helper decks
+    this.faceup = new Deck();
+    this.aside = new Deck();
+
     // Set one card aside each round
-    this.aside = this.deck.pop();
+    this.aside.push(this.deck.pop());
 
     // Set three cards face-up in a two-person game
     if (this.players.size === 2 && config.rules.set_aside_on_two_players) {
@@ -114,8 +131,7 @@ class Game {
   newRound() {
     this.status = 'inactive';
 
-
-
+    // ...
 
     this.resetCards();
 

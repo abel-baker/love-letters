@@ -12,7 +12,7 @@ const embed = (interaction) => {
   const groupSize = config.rules.min_group_size;
   const groupLimit = config.rules.max_group_size;
 
-  // list
+  // list displayed in invitation embed
   const memberPlayingList = [];
   for (let i = 0; i < groupLimit; i++) {
     const member = Array.from(game.playerQueue.keys())[i];

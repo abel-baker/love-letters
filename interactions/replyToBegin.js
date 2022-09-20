@@ -12,7 +12,9 @@ const replyToBegin = {
     const address = `${guild}-${channel}`;
     const game = client.games.get(address);
 
-    game.start();
+    game.beginGame();
+    
+    await interaction.reply({ content: `:love_letter: Let's begin!` });
   }
 }
 

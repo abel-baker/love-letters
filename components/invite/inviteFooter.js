@@ -7,12 +7,12 @@ const footer = (game) => {
   // const max = config.rules.max_group_size || 4;
   const groupSize = config.rules.max_group_size || 4;
 
-  console.log(game.playerQueue);
+  // console.log(game.playerQueue);
   const memberQueue = Array.from(game.playerQueue.keys());
-  console.log(memberQueue?.map(member => member.nickname));
+  // console.log(memberQueue?.map(member => member.nickname))
   
   let queued;
-  console.log(`between`, )
+  // console.log(`between`, )
   if (memberQueue && memberQueue.length > groupSize) {
     queued = prettyJoin(memberQueue.map(member => member.nickname).slice(groupSize, game.playerQueue.length));
   }
