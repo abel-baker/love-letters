@@ -6,7 +6,7 @@ const row = (interaction) => {
   const address = `${guild}-${channel}`;
   const game = client.games.get(address);
 
-  const current = game?.players.size;
+  const current = game.players?.size;
   const min = config.rules.min_group_size || 2;
   const max = config.rules.max_group_size || 4;
 

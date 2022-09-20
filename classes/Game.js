@@ -100,13 +100,13 @@ class Game {
   }
 
   // update invitations
-  processNewInvitation(invite) {
-    // put past used invites into an array that can be referenced/processed later
-    this.pastInvitations.push(this.lastInvitation);
+  // processNewInvitation(invite) {
+  //   // put past used invites into an array that can be referenced/processed later
+  //   this.pastInvitations.push(this.lastInvitation);
 
-    // current invitation can be referenced to validate users clicking on the correct invitation
-    this.lastInvitation = invite;
-  }
+  //   // current invitation can be referenced to validate users clicking on the correct invitation
+  //   this.lastInvitation = invite;
+  // }
 
   /* Prepare the Game object to play a round.
   *  Rather than put this in the constructor, 
@@ -211,7 +211,7 @@ class Game {
   }
   leaveQueue(member) {
     // get some relevant conditions
-    const inGame = this.players.has()
+    // const inGame = this.players.has()
 
     // remove the member and their Player object from the queue--they won't play next hand
     // return their Player object for purposes of messaging, scoreboard, etc.

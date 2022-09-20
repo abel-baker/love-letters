@@ -24,8 +24,8 @@ const slashNewGame = {
 
     const game = new Game(guild, channel);
 
-    const invite = new Invite(interaction);
-    game.processNewInvitation(invite);
+    // const invite = new Invite(interaction);
+    // game.processNewInvitation(invite);
 
     // set game to client map
     client.games.set(address, game);
@@ -33,7 +33,7 @@ const slashNewGame = {
     console.log(`Creating new Game from command`, interaction.id);
     
     // + this should actually happen after selecting to Play
-    game.start();
+    // game.start();
 
     game.join(interaction.member);
 
