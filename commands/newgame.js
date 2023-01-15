@@ -22,7 +22,7 @@ const slashNewGame = {
 
     // Confirm there is not already a game running elsewhere
 
-    const game = new Game(guild, channel);
+    const game = new Game(interaction);
 
     // const invite = new Invite(interaction);
     // game.processNewInvitation(invite);

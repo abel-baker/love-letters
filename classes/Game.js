@@ -22,8 +22,11 @@ const { Card } = require('./Card');
 */
 
 class Game {
-  constructor(guild, channel) {
+  constructor(interaction) {
     this.status = 'setup';
+
+    const { guild, channel } = interaction;
+    this.invitation = interaction;
 
     this.guild = guild;
     this.channel = channel;
@@ -66,7 +69,7 @@ class Game {
 
   /* Prepare the Game object to play a game. */
   beginGame() {
-    this.status = 'starting';
+    this.status = 'starting game';
     
     // Player: these are the Player objects who are participating or will participate in a round
     // This is constructed from the first x members in the Player queue, where x is the size of
@@ -88,7 +91,7 @@ class Game {
   
   /* Begin one round of play */
   beginRound() {
-    this.status = 'dealing';
+    this.status = 'beginning round';
 
     // Determine starting Player by some mechanism (won last hand, always the same Player, etc)
     this.turnIndex = 0;
@@ -109,6 +112,11 @@ class Game {
       for (let i = 0; i < 3; i++) {
         this.faceup.push(this.deck.pop());
       }
+    }
+
+    for (let player of this.players) {
+      let dealt = this.deal(player,1);
+      console.log(`Card dealt to`, player.member.nickname, dealt.name);
     }
 
     // ...
@@ -158,7 +166,8 @@ class Game {
     console.log("Starting with players: ", this.players);
 
     for (let player of this.players) {
-      this.deal(player, 1);
+      const dealt = this.deal(player, 1);
+      console.log(`Card dealt to`,player,dealt[0]);
     }
   }
 
@@ -243,7 +252,7 @@ class Game {
 
   // removes the specified member from the game, performing necessary logic to resolve losing them.
   leaveGame(member) {
-    const player = this.MemberIsPlaying(member);
+    const player = this.memberIsPlaying(member);
     if (player) {
       //TODO
       // remove from this.players
@@ -284,7 +293,7 @@ class Game {
     return this.players.has(query) || [...this.players.values()].includes(query);
   }
   // check this.players for a Player object matching the member argument
-  MemberIsPlaying(member) {
+  memberIsPlaying(member) {
     for (let player of this.players) {
       if (member === player.member) {
         return player;

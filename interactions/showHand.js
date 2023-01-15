@@ -9,13 +9,14 @@ const showHand = {
     const game = client.games.get(address);
 
     // Verify member is playing
-    if (!await Verify.MemberIsInGame(client, address, interaction.member)) {
-      await interaction.reply({ content: `Doesn't look like you are playing this game`, ephemeral: true });
-      return;
-    }
+    // if (!await Verify.MemberIsInGame(client, address, interaction.member)) {
+    //   await interaction.reply({ content: `Doesn't look like you are playing this game`, ephemeral: true });
+    //   return;
+    // }
 
-    const hand = game.players.get(member).hand;
+    const hand = game.memberIsPlaying(member)?.hand;
     const components = playButtons(hand, await Verify.MemberIsCurrentPlayer(client, address, member));
+    console.log(hand, components);
 
     await interaction.reply({ components: [components], content: `Your hand contains  ${hand.map(card => card.props.label).join(' &  ')}.  You ${await Verify.MemberIsCurrentPlayer(client, address, member)? `are` : `are not`} the current player.`, ephemeral: true });
   }

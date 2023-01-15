@@ -18,12 +18,16 @@ class Player {
     return this.member.nickname;
   }
 
+  isMember(testPlayer) {
+    return testPlayer.member == this.member;
+  }
+
   clearHand() {
     this.hand = new Deck();
   }
   draw(...cards) {
     this.hand.push(...cards);
-    return this.hand;
+    return this.hand; 
   }
   drawFrom(deck, count = 1) {
     const drawn = deck.draw(count);
