@@ -31,6 +31,7 @@ class Deck extends Array {
     for (let i = 0; i < count; i++) {
       drawn.push(this.pop());
     }
+    // console.log('Deck::drawn', drawn.map(card => card.name));
     return drawn;
   }
 }

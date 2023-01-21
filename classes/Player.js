@@ -32,6 +32,7 @@ class Player {
   drawFrom(deck, count = 1) {
     const drawn = deck.draw(count);
     this.hand.push(...drawn);
+    // console.log('Player::adding',drawn.map(card => card.name),'to hand',this.hand.map(card => card.name));
     return drawn;
   }
   play(card) {

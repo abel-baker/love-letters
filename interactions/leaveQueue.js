@@ -1,9 +1,9 @@
 const inviteEmbed = require('../components/invite/inviteEmbed');
 const inviteButtons = require('../components/invite/inviteButtonsRow');
-const expiredEmbed = require('../components/invite/expiredEmbed');
+// const expiredEmbed = require('../components/invite/expiredEmbed');
 
-const replyToLeave = {
-  name: 'replyToLeave',
+const leaveQueue = {
+  name: 'leaveQueue',
   async execute(interaction) {
     const inviteMessage = interaction.message;
     const inviteCommand = inviteMessage.interaction;
@@ -13,12 +13,12 @@ const replyToLeave = {
     const address = `${guild}-${channel}`;
     const game = client.games.get(address);
 
-    if (!game?.origin || inviteCommand.id !== game?.origin) {
-      console.log(`Origin mismatch`, game?.origin);
+    // if (!game?.origin || inviteCommand.id !== game?.origin) {
+    //   console.log(`Origin mismatch`, game?.origin);
 
-      await interaction.update({ components: [], embeds: [...interaction.message.embeds, expiredEmbed] });
-      return;
-    }
+    //   await interaction.update({ components: [], embeds: [...interaction.message.embeds, expiredEmbed] });
+    //   return;
+    // }
 
     const success = game?.leaveQueue(interaction.member);
 
@@ -33,4 +33,4 @@ const replyToLeave = {
   }
 }
 
-module.exports = replyToLeave;
+module.exports = leaveQueue;

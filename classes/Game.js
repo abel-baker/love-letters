@@ -31,8 +31,6 @@ class Game {
     this.guild = guild;
     this.channel = channel;
 
-    // console.log(`Creating new game in ${this.address}`);
-
     // map GuildMember -> Player
     // these are the members (and corresponding created Players) who want to play next hand
     // by default, players in a current hand are left in the queue so they can play next hand automatically
@@ -40,18 +38,17 @@ class Game {
 
     this.players = new Set();
 
-    // this.pastInvitations = [];
-    // this.lastInvitation;
+    this.twoPlayerGame = false;
 
-    // this.newRound();
+    this.dealer = null;
+    this.startingPlayer = null;
+
+    this.locked = false;
   }
 
   get address() {
     return `${this.guild.id}-${this.channel.id}`;
   }
-  // get playerList() {
-  //   return this.players
-  // }
   get atMin() {
     const groupSize = config.rules.min_group_size;
     return this.playerQueue.size >= groupSize;
@@ -60,6 +57,7 @@ class Game {
     const groupLimit = config.rules.max_group_size;
     return this.playerQueue.size >= groupLimit;
   }
+
   get currentPlayer() {
     return this.currentPlayer();
   }
@@ -70,6 +68,7 @@ class Game {
   /* Prepare the Game object to play a game. */
   beginGame() {
     this.status = 'starting game';
+    this.locked = true;
     
     // Player: these are the Player objects who are participating or will participate in a round
     // This is constructed from the first x members in the Player queue, where x is the size of
@@ -83,6 +82,11 @@ class Game {
     for (const player of playersToAdd) {
       this.players.add(player);
     }
+
+    this.twoPlayerGame = this.players.size == 2;
+
+    console.log(`\nBeginning game with ${this.players.size} players`, [...this.players].map(player => player.member.nickname || player.member.displayName));
+    console.log(`Active player: ${this.currentPlayer().member.nickname}`);
 
     // await Ready check of some kind?
 
@@ -99,6 +103,7 @@ class Game {
     // Grab a new deck
     this.deck = new Deck(...standardDeck);
     this.deck.shuffle();
+    console.log('Shuffled deck:', this.deck.map(card => card.name));
 
     // Create helper decks
     this.faceup = new Deck();
@@ -106,17 +111,20 @@ class Game {
 
     // Set one card aside each round
     this.aside.push(this.deck.pop());
+    console.log('Aside:',this.aside.map(card => card.name));
 
     // Set three cards face-up in a two-person game
-    if (this.players.size === 2 && config.rules.set_aside_on_two_players) {
+    if (this.twoPlayerGame && config.rules.set_aside_on_two_players) {
       for (let i = 0; i < 3; i++) {
         this.faceup.push(this.deck.pop());
       }
+      console.log('Face up:', this.faceup.map(card => card.name));
     }
 
+    // Debug--skip deal dialogue, deal a card to each player
     for (let player of this.players) {
       let dealt = this.deal(player,1);
-      console.log(`Card dealt to`, player.member.nickname, dealt.name);
+      console.log(`Dealing`, dealt.map(card => card.name), `to ${player.member.displayName || player.member.nickname}`, player.hand.map(card => card.name));
     }
 
     // ...
@@ -146,31 +154,30 @@ class Game {
     // send new round message?
   }
 
-  // begin hand
-  start() {
-    this.status = 'active';
+  // OLD begin hand
+  // start() {
+  //   this.status = 'active';
 
-    this.setAside();
-    console.log(`Setting aside ${this.aside.name}`);
+  //   this.setAside();
+  //   console.log(`Setting aside ${this.aside.name}`);
 
-    const playersToAdd = Array.from(this.playerQueue.values()).slice(0, config.rules.max_group_size);
-    console.log(playersToAdd);
+  //   const playersToAdd = Array.from(this.playerQueue.values()).slice(0, config.rules.max_group_size);
+  //   console.log(playersToAdd);
     
-    // take the top of the queue and add them to the players group
-    // this.players.add(...Array.from(this.playerQueue.values()).slice(config.rules.max_group_size));
-    // this.players.add(...playersToAdd);
-    for (const player of playersToAdd) {
-      this.players.add(player);
-    }
+  //   // take the top of the queue and add them to the players group
+  //   // this.players.add(...Array.from(this.playerQueue.values()).slice(config.rules.max_group_size));
+  //   // this.players.add(...playersToAdd);
+  //   for (const player of playersToAdd) {
+  //     this.players.add(player);
+  //   }
 
-    console.log("Starting with players: ", this.players);
+  //   console.log("Starting with players: ", this.players);
 
-    for (let player of this.players) {
-      const dealt = this.deal(player, 1);
-      console.log(`Card dealt to`,player,dealt[0]);
-    }
-  }
-
+  //   for (let player of this.players) {
+  //     const dealt = this.deal(player, 1);
+  //     console.log(`Card dealt to`,player,dealt[0]);
+  //   }
+  // }
 
 
 
@@ -197,6 +204,7 @@ class Game {
   }
   deal(player, count = 1) {
     const dealt = player.drawFrom(this.deck, count);
+    // console.log('Game::dealing', dealt.map(card => card.name), 'to', player.member.nickname);
     return dealt;
   }
 
@@ -205,10 +213,15 @@ class Game {
 
   // join the queue (or an open game) to play
   join(member) {
+    // if game is at max, disallow joining of additional players
+    if (this.playerQueue.size >= config.rules.max_group_size) {
+      return false;
+    }
+
     // if member is already queued, disallow them being added again (unless debug is active)
     if (this.playerQueue.has(member)) {
       if (config.debug) {
-        const fakeMember = { ...member, nickname: `fake ${member.nickname} ${this.playerQueue.size}`};
+        const fakeMember = { ...member, nickname: `fake ${member.displayName} ${this.playerQueue.size}`};
         const fakePlayer = new Player(fakeMember);
         // console.log("Attempting to join", fakeMember, fakePlayer)
         this.playerQueue.set(fakeMember, fakePlayer);
@@ -248,6 +261,10 @@ class Game {
     }
 
     return false;
+  }
+
+  getPlayer(member) {
+    return this.playerQueue.get(member);
   }
 
   // removes the specified member from the game, performing necessary logic to resolve losing them.
@@ -301,6 +318,11 @@ class Game {
     }
 
     return false;
+  }
+  
+
+  isCurrentPlayer(query) {
+    return query === this.currentPlayer() || query === this.currentPlayer().member;
   }
 
   currentPlayer() {

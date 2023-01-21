@@ -1,10 +1,9 @@
 const { Verify } = require('../utils/check');
 const inviteEmbed = require('../components/invite/inviteEmbed');
 const inviteButtons = require('../components/invite/inviteButtonsRow');
-const expiredEmbed = require('../components/invite/expiredEmbed');
 
-const replyToJoin = {
-  name: 'replyToJoin',
+const joinQueue = {
+  name: 'joinQueue',
   async execute(interaction) {
     const { client, guild, channel } = interaction;
     const address = `${guild}-${channel}`;
@@ -34,9 +33,9 @@ const replyToJoin = {
       
       await interaction.update({ embeds: [newEmbed], components: [newButtons] });
     } else {
-      await interaction.reply({ content: `Unable to join; is there a game and are you already playing it?`, ephemeral: true });
+      await interaction.reply({ content: `Unable to join game`, ephemeral: true });
     }
   }
 }
 
-module.exports = replyToJoin;
+module.exports = joinQueue;

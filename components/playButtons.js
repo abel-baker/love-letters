@@ -4,7 +4,7 @@ const cardButton = require('./cardButton');
 const buttonShowHand = new ButtonBuilder()
   .setCustomId('showHand')
   .setLabel('Show hand')
-  .setStyle(ButtonStyle.Secondary)
+  .setStyle(ButtonStyle.Secondary);
 
 const row = (hand, currentPlayer = false) => {
   const buttons = []

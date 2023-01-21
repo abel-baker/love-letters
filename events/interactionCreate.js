@@ -1,5 +1,3 @@
-const replyToJoin = require('../interactions/replyToJoin');
-
 const onInteractionCreate = {
   name: 'interactionCreate',
   async execute(interaction) {
