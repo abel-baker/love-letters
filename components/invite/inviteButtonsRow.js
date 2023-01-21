@@ -36,7 +36,7 @@ const row = (interaction) => {
   }
 
   // Disable 'leave' button if there's no one to leave
-  if (game.playerQueue.size === 0) {
+  if (game.players.size === 0) {
     buttonLeaveQueue
       .setDisabled(true);
   }

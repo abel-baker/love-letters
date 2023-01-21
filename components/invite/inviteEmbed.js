@@ -13,7 +13,7 @@ const embed = (interaction) => {
   // list displayed in invitation embed
   const memberPlayingList = [];
   for (let i = 0; i < groupLimit; i++) {
-    const member = Array.from(game.playerQueue.keys())[i];
+    const member = Array.from(game.players.keys())[i];
     if (member) {
       memberPlayingList.push(`:love_letter: **${member.displayName || member.nickname}**`);
     } else {

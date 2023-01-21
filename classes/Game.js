@@ -34,9 +34,10 @@ class Game {
     // map GuildMember -> Player
     // these are the members (and corresponding created Players) who want to play next hand
     // by default, players in a current hand are left in the queue so they can play next hand automatically
-    this.playerQueue = new Map();
+    // this.playerQueue = new Map();
 
-    this.players = new Set();
+    // map GuildMember -> Player
+    this.players = new Map();
 
     this.twoPlayerGame = false;
 
@@ -51,11 +52,13 @@ class Game {
   }
   get atMin() {
     const groupSize = config.rules.min_group_size;
-    return this.playerQueue.size >= groupSize;
+    // return this.playerQueue.size >= groupSize;
+    return this.players.size >= groupSize;
   }
   get atMax() {
     const groupLimit = config.rules.max_group_size;
-    return this.playerQueue.size >= groupLimit;
+    // return this.playerQueue.size >= groupLimit;
+    return this.players.size >= groupLimit;
   }
 
   get currentPlayer() {
@@ -73,19 +76,19 @@ class Game {
     // Player: these are the Player objects who are participating or will participate in a round
     // This is constructed from the first x members in the Player queue, where x is the size of
     // a group of players according to the rules.
-    this.players = new Set();
+    // this.players = new Set();
     this.turnIndex = 0;
     
     // Take the top of the playerQueue (members who have opted to play) and add then to the round's
     // group of Players
-    const playersToAdd = Array.from(this.playerQueue.values()).slice(0, config.rules.max_group_size);
-    for (const player of playersToAdd) {
-      this.players.add(player);
-    }
+    // const playersToAdd = Array.from(this.playerQueue.values()).slice(0, config.rules.max_group_size);
+    // for (const player of playersToAdd) {
+    //   this.players.add(player);
+    // }
 
     this.twoPlayerGame = this.players.size == 2;
 
-    console.log(`\nBeginning game with ${this.players.size} players`, [...this.players].map(player => player.member.nickname || player.member.displayName));
+    console.log(`\nBeginning game with ${this.players.size} players`, [...this.players.keys()].map(member => member.nickname || member.displayName));
     console.log(`Active player: ${this.currentPlayer().member.nickname}`);
 
     // await Ready check of some kind?
@@ -122,7 +125,7 @@ class Game {
     }
 
     // Debug--skip deal dialogue, deal a card to each player
-    for (let player of this.players) {
+    for (let player of this.players.values()) {
       let dealt = this.deal(player,1);
       console.log(`Dealing`, dealt.map(card => card.name), `to ${player.member.displayName || player.member.nickname}`, player.hand.map(card => card.name));
     }
@@ -214,17 +217,17 @@ class Game {
   // join the queue (or an open game) to play
   join(member) {
     // if game is at max, disallow joining of additional players
-    if (this.playerQueue.size >= config.rules.max_group_size) {
+    if (this.players.size >= config.rules.max_group_size) {
       return false;
     }
 
     // if member is already queued, disallow them being added again (unless debug is active)
-    if (this.playerQueue.has(member)) {
+    if (this.players.has(member)) {
       if (config.debug) {
-        const fakeMember = { ...member, nickname: `fake ${member.displayName} ${this.playerQueue.size}`};
+        const fakeMember = { ...member, nickname: `fake ${member.displayName} ${this.players.size}`};
         const fakePlayer = new Player(fakeMember);
         // console.log("Attempting to join", fakeMember, fakePlayer)
-        this.playerQueue.set(fakeMember, fakePlayer);
+        this.players.set(fakeMember, fakePlayer);
         // console.log(this.playerQueue);
         return true;
       }
@@ -244,44 +247,38 @@ class Game {
 
     // otherwise, proceed to add the new member to player queue
     // this.players.set(member, new Player(member));
-    this.playerQueue.set(member, new Player(member));
+    this.players.set(member, new Player(member));
     return true;
   }
-  leaveQueue(member) {
-    // get some relevant conditions
-    // const inGame = this.players.has()
+  // leaveQueue(member) {
+  //   // get some relevant conditions
+  //   // const inGame = this.players.has()
 
-    // remove the member and their Player object from the queue--they won't play next hand
-    // return their Player object for purposes of messaging, scoreboard, etc.
-    if (this.playerQueue.has(member)) {
-      const player = this.playerQueue.get(member);
-      this.playerQueue.delete(member);
+  //   // remove the member and their Player object from the queue--they won't play next hand
+  //   // return their Player object for purposes of messaging, scoreboard, etc.
+  //   if (this.playerQueue.has(member)) {
+  //     const player = this.playerQueue.get(member);
+  //     this.playerQueue.delete(member);
 
-      return player;
-    }
+  //     return player;
+  //   }
 
-    return false;
-  }
+  //   return false;
+  // }
 
   getPlayer(member) {
-    return this.playerQueue.get(member);
+    return this.players.get(member);
   }
 
   // removes the specified member from the game, performing necessary logic to resolve losing them.
   leaveGame(member) {
-    const player = this.memberIsPlaying(member);
-    if (player) {
-      //TODO
-      // remove from this.players
-      // discard hand?  lay hand facedown?
-      // make a history entry (todo)
-      // make some kind of message
+    if (this.players.has(member)) {
+      this.players.delete(member);
+      return true;
     }
 
     return false;
   }
-
-  /* here */
 
   // returns an array of members with a corresponding Player object
   playing() {
@@ -309,16 +306,16 @@ class Game {
     // Allow either a GuildMember or a Player as query
     return this.players.has(query) || [...this.players.values()].includes(query);
   }
-  // check this.players for a Player object matching the member argument
-  memberIsPlaying(member) {
-    for (let player of this.players) {
-      if (member === player.member) {
-        return player;
-      }
-    }
+  // // check this.players for a Player object matching the member argument
+  // memberIsPlaying(member) {
+  //   for (let player of this.players) {
+  //     if (member === player.member) {
+  //       return player;
+  //     }
+  //   }
 
-    return false;
-  }
+  //   return false;
+  // }
   
 
   isCurrentPlayer(query) {
@@ -328,13 +325,13 @@ class Game {
   currentPlayer() {
     this.turnIndex = this.turnIndex % this.players.size;
     // const player = [...this.players.values()][this.turnIndex];
-    const player = Array.from(this.players)[this.turnIndex];
+    const player = Array.from(this.players.values())[this.turnIndex];
     return player;
   }
   nextPlayer() {
     const nextTurnIndex = (this.turnIndex + 1) % this.players.size;
     // const nextPlayer = [...this.players.values()][nextTurnIndex];
-    const nextPlayer = Array.from(this.players)[nextTurnIndex];
+    const nextPlayer = Array.from(this.players.values())[nextTurnIndex];
     return nextPlayer;
   }
   advancePlayer() {

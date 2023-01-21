@@ -27,7 +27,7 @@ const drawCard = {
     interaction.update({ components: [row] });
 
 
-    const hand = game.memberIsPlaying(member)?.hand;
+    const hand = game.players.get(member).hand;
     const current = game.isCurrentPlayer(member);
     const components = playButtons(hand, current);
 

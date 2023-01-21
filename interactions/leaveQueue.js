@@ -9,7 +9,7 @@ const leaveQueue = {
     const inviteCommand = inviteMessage.interaction;
     console.log(`Clicked leave button from message from command`, inviteCommand.id);
 
-    const { client, guild, channel } = interaction;
+    const { client, guild, channel, member } = interaction;
     const address = `${guild}-${channel}`;
     const game = client.games.get(address);
 
@@ -20,7 +20,7 @@ const leaveQueue = {
     //   return;
     // }
 
-    const success = game?.leaveQueue(interaction.member);
+    const success = game?.leaveGame(member);
 
     if (success) {
       const newEmbed = inviteEmbed(interaction);
