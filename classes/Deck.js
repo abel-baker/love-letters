@@ -27,12 +27,14 @@ class Deck extends Array {
   }
 
   draw(count = 1) {
+    if (this.length < count) return { success: false, error: `Cannot draw ${count}; deck size ${this.length}` };
+
     const drawn = [];
     for (let i = 0; i < count; i++) {
       drawn.push(this.pop());
     }
     // console.log('Deck::drawn', drawn.map(card => card.name));
-    return drawn;
+    return { success: true, drawn };
   }
 }
 

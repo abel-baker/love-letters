@@ -126,8 +126,12 @@ class Game {
 
     // Debug--skip deal dialogue, deal a card to each player
     for (let player of this.players.values()) {
-      let dealt = this.deal(player,1);
-      console.log(`Dealing`, dealt.map(card => card.name), `to ${player.member.displayName || player.member.nickname}`, player.hand.map(card => card.name));
+      let dealResult = this.deal(player,1);
+      if (dealResult.success) {
+        console.log(`Dealing`, dealResult.drawn.map(card => card.name), `to ${player.member.displayName || player.member.nickname}`, player.hand.map(card => card.name));
+      } else {
+        console.log(`Error dealing card`, dealResult.error);
+      }
     }
 
     // ...
@@ -206,9 +210,9 @@ class Game {
     return this.aside;
   }
   deal(player, count = 1) {
-    const dealt = player.drawFrom(this.deck, count);
+    const drawResult = player.drawFrom(this.deck, count);
     // console.log('Game::dealing', dealt.map(card => card.name), 'to', player.member.nickname);
-    return dealt;
+    return drawResult;
   }
 
 

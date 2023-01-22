@@ -30,10 +30,13 @@ class Player {
     return this.hand; 
   }
   drawFrom(deck, count = 1) {
-    const drawn = deck.draw(count);
-    this.hand.push(...drawn);
+    const drawResult = deck.draw(count);
+
+    if (drawResult.success) {
+      this.hand.push(...drawResult.drawn);
+    }
     // console.log('Player::adding',drawn.map(card => card.name),'to hand',this.hand.map(card => card.name));
-    return drawn;
+    return drawResult;
   }
   play(card) {
     if (this.hand.includes(card)) {

@@ -12,8 +12,13 @@ const drawCard = {
     console.log(`Active player: ${game.currentPlayer().member.nickname}`);
 
     const player = game.getPlayer(member);
-    let dealt = game.deal(player,1);
-    console.log(`${member.displayName || member.nickname} draws`, dealt.map(card => card.name),  `into`, player.hand.map(card => card.name));
+    let dealResult = game.deal(player,1);
+    if (dealResult.success) {
+      console.log(`${member.displayName || member.nickname} draws`, dealResult.drawn.map(card => card.name),  `into`, player.hand.map(card => card.name));
+    } else {
+      await interaction.reply({ content: dealResult.error, ephemeral: true });
+      return;
+    }
 
     // Deactivate Draw button
     const disabledDrawButton = new ButtonBuilder()
@@ -37,7 +42,7 @@ const drawCard = {
     await interaction.channel.send({ content: `:love_letter: **${interaction.member.displayName}** draws a card.` });
     
     await wait(500);
-    await interaction.followUp({ components: [components], content: `Your hand contains  ${hand.map(card => card.props.label).join(' &  ')}.  You ${current? `are` : `are not`} the current player.`, ephemeral: true });
+    await interaction.followUp({ components: [components], content: `Your hand contains  ${hand.map(card => `${card.props.value_emoji} **${card.name}**`).join(' &  ')}.  You ${current? `are` : `are not`} the current player.`, ephemeral: true });
   }
 }
 
