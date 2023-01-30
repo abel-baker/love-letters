@@ -1,11 +1,10 @@
-const config = require('../config.json');
 const { ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
 const menuButtons = require('../components/menuButtons');
 const { Cards } = require('../classes/Card');
 const wait = require('node:timers/promises').setTimeout;
 
-const playCard = {
-  name: 'playCard',
+const discardCard = {
+  name: 'discardCard',
   async execute(interaction) {
     const { client, guild, channel, customId, member } = interaction;
     const address = `${guild}-${channel}`;
@@ -23,50 +22,19 @@ const playCard = {
     const player = game.players.get(member);
 
     if (!card) {
-      const out = `${member.nickname || member.displayName} attempts to play ${cardName}`;
+      const out = `${member.nickname || member.displayName} attempts to discard ${cardName}`;
       console.log(out);
       await interaction.reply({ content: out, ephemeral: true });
       return;
     }
 
-    const menu = menuButtons();
-
-    const played = player.play(card)[0];
+    const played = player.play(card);
     game.discard.push(played);
-    console.log(`:love_letter: ${member.nickname || member.displayName} plays ${card.name} from`, player.hand.map(card => card.name));
+    console.log(`${member.nickname || member.displayName} discards ${card.name} from`, player.hand.map(card => card.name));
 
-    const embed = {
-      color: config.embed_color,
-      // thumbnail: { url: interaction.user.displayAvatarURL() },
-
-      author: {
-        name: `${member.nickname || member.displayName} plays ${played.props.article} ${played.props.value_emoji} ${played.name}.`,
-        // iconURL: interaction.user.displayAvatarURL()
-      },
-
-      thumbnail: { url: interaction.user.displayAvatarURL() },
-
-      fields: [
-        {
-          name: `${played.props.value_emoji} ${played.name.charAt(0).toUpperCase() + played.name.slice(1)}`,
-          value: `${played.props.rules}`
-        }
-      ],
-
-      footer: {
-        iconURL: config.bot_avatar_url,
-        text: `Next player: next-player`
-      },
-
-      // description: `:love_letter: **${member.nickname || member.displayName}** draws a card.`
-    };
-    
-    await channel.sendTyping();
-    await wait(500);
-    await interaction.update({ components: [] });
-    await interaction.channel.send({
-      // content: `${member.nickname || member.displayName} plays ${card.props.value_emoji} ${card.name}`,
-      embeds: [embed],
+    const menu = menuButtons();
+    await interaction.reply({
+      content: `${member.nickname || member.displayName} discards ${card.props.value_emoji} ${card.name}`,
       components: [menu] });
 
     // const drawButton = new ButtonBuilder()
@@ -113,4 +81,4 @@ const playCard = {
   }
 }
 
-module.exports = playCard;
+module.exports = discardCard;

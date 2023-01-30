@@ -41,10 +41,12 @@ class Game {
 
     this.twoPlayerGame = false;
 
-    this.dealer = null;
-    this.startingPlayer = null;
+    // this.dealer = null;
+    // this.startingPlayer = null;
 
     this.locked = false;
+    
+    this.commandMessages = [];
   }
 
   get address() {
@@ -77,7 +79,7 @@ class Game {
     // This is constructed from the first x members in the Player queue, where x is the size of
     // a group of players according to the rules.
     // this.players = new Set();
-    this.turnIndex = 0;
+    // this.turnIndex = 0;
     
     // Take the top of the playerQueue (members who have opted to play) and add then to the round's
     // group of Players
@@ -89,7 +91,7 @@ class Game {
     this.twoPlayerGame = this.players.size == 2;
 
     console.log(`\nBeginning game with ${this.players.size} players`, [...this.players.keys()].map(member => member.nickname || member.displayName));
-    console.log(`Active player: ${this.currentPlayer().member.nickname}`);
+    // console.log(`Active player: ${this.currentPlayer().member.nickname}`);
 
     // await Ready check of some kind?
 
@@ -101,7 +103,7 @@ class Game {
     this.status = 'beginning round';
 
     // Determine starting Player by some mechanism (won last hand, always the same Player, etc)
-    this.turnIndex = 0;
+    // this.turnIndex = 0;
 
     // Grab a new deck
     this.deck = new Deck(...standardDeck);
@@ -111,6 +113,7 @@ class Game {
     // Create helper decks
     this.faceup = new Deck();
     this.aside = new Deck();
+    this.discard = new Deck();
 
     // Set one card aside each round
     this.aside.push(this.deck.pop());
@@ -322,25 +325,25 @@ class Game {
   // }
   
 
-  isCurrentPlayer(query) {
-    return query === this.currentPlayer() || query === this.currentPlayer().member;
-  }
+  // isCurrentPlayer(query) {
+  //   return query === this.currentPlayer() || query === this.currentPlayer().member;
+  // }
 
-  currentPlayer() {
-    this.turnIndex = this.turnIndex % this.players.size;
-    // const player = [...this.players.values()][this.turnIndex];
-    const player = Array.from(this.players.values())[this.turnIndex];
-    return player;
-  }
-  nextPlayer() {
-    const nextTurnIndex = (this.turnIndex + 1) % this.players.size;
-    // const nextPlayer = [...this.players.values()][nextTurnIndex];
-    const nextPlayer = Array.from(this.players.values())[nextTurnIndex];
-    return nextPlayer;
-  }
-  advancePlayer() {
-    this.turnIndex += 1;
-  }
+  // currentPlayer() {
+  //   this.turnIndex = this.turnIndex % this.players.size;
+  //   // const player = [...this.players.values()][this.turnIndex];
+  //   const player = Array.from(this.players.values())[this.turnIndex];
+  //   return player;
+  // }
+  // nextPlayer() {
+  //   const nextTurnIndex = (this.turnIndex + 1) % this.players.size;
+  //   // const nextPlayer = [...this.players.values()][nextTurnIndex];
+  //   const nextPlayer = Array.from(this.players.values())[nextTurnIndex];
+  //   return nextPlayer;
+  // }
+  // advancePlayer() {
+  //   this.turnIndex += 1;
+  // }
 
 }
 

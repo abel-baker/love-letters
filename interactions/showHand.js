@@ -14,11 +14,22 @@ const showHand = {
     //   return;
     // }
 
-    const hand = game.memberIsPlaying(member)?.hand;
-    const components = playButtons(hand, await Verify.MemberIsCurrentPlayer(client, address, member));
-    console.log(hand);
+    // Validation
+    if (!game.isPlaying(member)) {
+      await interaction.reply({ content: `Error beginning game: It doesn't look like you are playing this round.`, ephemeral: true });
+      return;
+    }
 
-    await interaction.reply({ components: [components], content: `Your hand contains  ${hand.map(card => card.props.label).join(' &  ')}.  You ${await Verify.MemberIsCurrentPlayer(client, address, member)? `are` : `are not`} the current player.`, ephemeral: true });
+    const expanded = interaction.customId.split('/')[1] == 'expand';
+
+    const hand = game.players.get(member).hand;
+    // const current = game.isCurrentPlayer(member);
+    const components = playButtons(hand, expanded);
+
+    await interaction.reply({ 
+      content: `Your hand contains  ${hand.map(card => card.props.label).join(' &  ')}.`, 
+      components,
+      ephemeral: true });
   }
 }
 

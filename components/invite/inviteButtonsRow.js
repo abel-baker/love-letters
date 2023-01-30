@@ -49,6 +49,7 @@ const row = (interaction) => {
       .setEmoji('💌');
   }
 
+  // Disable buttons if game has begun
   if (game.locked) {
     buttonJoinQueue.setDisabled(true);
     buttonLeaveQueue.setDisabled(true);
