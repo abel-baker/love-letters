@@ -36,7 +36,7 @@ class Player {
       this.hand.push(...drawResult.drawn);
     }
     // console.log('Player::adding',drawn.map(card => card.name),'to hand',this.hand.map(card => card.name));
-    return drawResult;
+    return { ...drawResult, displayName: this.member.nickname || this.member.displayName, avatarURL: this.member.user.displayAvatarURL() };
   }
   play(card) {
     if (this.hand.includes(card)) {

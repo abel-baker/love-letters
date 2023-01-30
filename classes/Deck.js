@@ -34,7 +34,7 @@ class Deck extends Array {
       drawn.push(this.pop());
     }
     // console.log('Deck::drawn', drawn.map(card => card.name));
-    return { success: true, drawn };
+    return { success: true, drawn, deck: this };
   }
 }
 

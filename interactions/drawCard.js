@@ -8,7 +8,7 @@ const prettyJoin = require('../utils/prettyJoin');
 const drawCard = {
   name: 'drawCard',
   async execute(interaction) {
-    const { client, guild, channel, member } = interaction;
+    const { client, guild, channel, member, user } = interaction;
     const address = `${guild}-${channel}`;
     const game = client.games.get(address);
 
@@ -33,7 +33,7 @@ const drawCard = {
     const components = playButtons(hand);
 
     // "**player** draws a card"
-    const embed = drawEmbed(interaction);
+    const embed = drawEmbed(dealResult);
     
     // Show public response to draw action
     const publicMessage = await interaction.channel.send({ 
@@ -41,12 +41,9 @@ const drawCard = {
       embeds: [embed], 
       // components: [menu]
     });
-    
-    console.log(publicMessage);
 
     // Remove components (buttons) from prior action messages
     for (let message of game.commandMessages) {
-      console.log(message);
       message.edit({ components: [] });
     }
     game.commandMessages = [];
