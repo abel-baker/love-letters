@@ -1,19 +1,19 @@
 const config = require('../../config.json');
 
 const embed = (drawResult) => {
-  const { displayName, avatarURL, deck } = drawResult;
+  const { player, deck } = drawResult;
 
   const out = {
     color: config.embed_color_draw,
     // thumbnail: { url: interaction.user.displayAvatarURL() },
 
     author: {
-      name: `${displayName} draws a card`,
+      name: `${player.name} draws a card`,
       // iconURL: config.bot_avatar_url
-      iconURL: avatarURL
+      iconURL: player.avatarURL
     },
 
-    // description: `:love_letter: **${displayName}** draws a card.`,
+    // description: `:love_letter: **${player.name}** draws a card.`,
   };
 
   if (deck.length <= 3) {

@@ -2,7 +2,8 @@ const config = require('../config.json');
 const wait = require('node:timers/promises').setTimeout;
 const menuButtons = require('../components/menuButtons');
 const playButtons = require('../components/playButtons');
-const drawEmbed = require('../components/embeds/drawEmbed');
+const announceDrawEmbed = require('../components/embeds/announceDraw');
+const drawResultEmbed = require('../components/embeds/drawResult');
 const prettyJoin = require('../utils/prettyJoin');
 
 const drawCard = {
@@ -18,11 +19,11 @@ const drawCard = {
     await interaction.deferUpdate();
 
     const player = game.getPlayer(member);
-    let dealResult = game.deal(player,1);
-    if (dealResult.success) {
-      console.log(`${member.displayName || member.nickname} draws`, dealResult.drawn.map(card => card.name),  `into`, player.hand.map(card => card.name));
+    let drawResult = game.deal(player,1);
+    if (drawResult.success) {
+      console.log(`${player.name} draws`, drawResult.drawn.map(card => card.name),  `into`, player.hand.map(card => card.name));
     } else {
-      await interaction.reply({ content: dealResult.error, ephemeral: true });
+      await interaction.reply({ content: drawResult.error, ephemeral: true });
       return;
     }
 
@@ -33,13 +34,13 @@ const drawCard = {
     const components = playButtons(hand);
 
     // "**player** draws a card"
-    const embed = drawEmbed(dealResult);
+    const embed = announceDrawEmbed(drawResult);
     
     // Show public response to draw action
     const publicMessage = await interaction.channel.send({ 
       fetchReply: true,
       embeds: [embed], 
-      // components: [menu]
+      components: [menu]
     });
 
     // Remove components (buttons) from prior action messages
@@ -50,32 +51,14 @@ const drawCard = {
 
     game.commandMessages.push(publicMessage);
 
-    // "You draw ..."
-
-    const privateDescriptionFields = [];
-    for (let card of [...new Set(hand)]) {
-      privateDescriptionFields.push({
-        name: `${card.props.value_emoji} ${card.name.charAt(0).toUpperCase() + card.name.slice(1)}`,
-        value: `${card.props.rules}`
-      });
-    }
-
-    const privateEmbed = {
-      author: {
-        color: config.embed_color,
-        name: `You draw ${prettyJoin(dealResult.drawn.map(card => `${card.props.article} ${card.props.value_emoji} ${card.name}`))}.`,
-        iconURL: interaction.user.displayAvatarURL()
-      },
-      description: `Your hand contains ${prettyJoin(hand.map(card => `${card.props.article} ${card.props.value_emoji} **${card.name}**`))}.`,
-      fields: privateDescriptionFields
-    };
-
+        
     await wait(500);
     // Send private response to draw action
+    // "You draw ..."
     await interaction.followUp({ 
       components, 
       content: `Your hand contains ${prettyJoin(hand.map(card => `${card.props.article} ${card.props.value_emoji} **${card.name}**`))}.`, 
-      embeds: [privateEmbed],
+      embeds: [drawResultEmbed(drawResult)],
       ephemeral: true });
     
     

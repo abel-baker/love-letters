@@ -4,6 +4,8 @@ const { Deck } = require('./Deck');
 class Player {
   constructor(member) {
     this.member = member;
+    this.name = member.nickname || member.displayName;
+    this.avatarURL = member.user.displayAvatarURL();
 
     this.eliminated = false;
     this.score = 0;
@@ -36,7 +38,7 @@ class Player {
       this.hand.push(...drawResult.drawn);
     }
     // console.log('Player::adding',drawn.map(card => card.name),'to hand',this.hand.map(card => card.name));
-    return { ...drawResult, displayName: this.member.nickname || this.member.displayName, avatarURL: this.member.user.displayAvatarURL() };
+    return { ...drawResult, player: this };
   }
   play(card) {
     if (this.hand.includes(card)) {
