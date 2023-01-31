@@ -1,8 +1,8 @@
 const config = require('../../config.json');
 const prettyJoin = require('../../utils/prettyJoin');
 
-const embed = (drawResult) => {
-  const { drawn, player, deck } = drawResult;
+const embed = (handQuery) => {
+  const { player } = handQuery;
 
   const cardDescriptionFields = [];
   
@@ -15,16 +15,16 @@ const embed = (drawResult) => {
 
   const out = {
     color: config.embed_color_draw,
-    // thumbnail: { url: interaction.user.displayAvatarURL() },
 
     author: {
-      name: `You draw ${prettyJoin(drawn.map(card => `${card.props.article} ${card.props.value_emoji} ${card.name}`))}.`,
+      name: `You're holding ${player.hand.length === 0? `nothing` : player.hand.length === 1? `one card` : `some cards`}`,
       iconURL: player.avatarURL
     },
-    description: `\nYour hand contains ${prettyJoin(player.hand.map(card => `${card.props.article} ${card.props.value_emoji} **${card.name}**`))}.\n\u2800`,
+
+    description: `\u2800\nYour hand contains ${prettyJoin(player.hand.map(card => `${card.props.article} ${card.props.value_emoji} **${card.name}**`))}.\n\u2800`,
 
     fields: cardDescriptionFields
-  };
+  }
 
   return out;
 }
