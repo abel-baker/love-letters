@@ -2,6 +2,7 @@ const { SlashCommandBuilder } = require('discord.js');
 const Game = require('../classes/Game');
 const { Verify } = require('../utils/check');
 const menuButtons = require('../components/menuButtons');
+const announceDealEmbed = require('../components/embeds/announceDeal');
 const wait = require('node:timers/promises').setTimeout;
 
 module.exports = {
@@ -37,7 +38,8 @@ module.exports = {
     const menu = menuButtons();
     const publicMessage = await interaction.reply({ 
       fetchReply: true,
-      content: `:love_letter: Let's begin!  The dealer sets aside one card *face-down*, ${game.twoPlayerGame? `lays three cards *face-up*, ` : ``}then deals a card to each player.`,
+      // content: `:love_letter: Let's begin!  The dealer sets aside one card *face-down*, ${game.twoPlayerGame? `lays three cards *face-up*, ` : ``}then deals a card to each player.`,
+      embeds: [announceDealEmbed(game)],
       components: [menu] });
 
     game.commandMessages.push(publicMessage);

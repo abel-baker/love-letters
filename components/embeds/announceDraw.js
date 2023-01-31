@@ -17,7 +17,7 @@ const embed = (drawResult) => {
   };
 
   if (deck.length <= 3) {
-    out.footer = { text: `${deck.length} cards left in the deck` }
+    out.footer = { text: `${deck.length} card${deck.length === 1 ? '' : 's'} left in the deck` }
   }
 
   return out;

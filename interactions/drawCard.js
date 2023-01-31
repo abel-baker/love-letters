@@ -19,6 +19,8 @@ const drawCard = {
     await interaction.deferUpdate();
 
     const player = game.getPlayer(member);
+
+    // perform the draw action
     let drawResult = game.deal(player,1);
     if (drawResult.success) {
       console.log(`${player.name} draws`, drawResult.drawn.map(card => card.name),  `into`, player.hand.map(card => card.name));
@@ -40,7 +42,7 @@ const drawCard = {
     const publicMessage = await interaction.channel.send({ 
       fetchReply: true,
       embeds: [embed], 
-      components: [menu]
+      components: [menuButtons()]
     });
 
     // Remove components (buttons) from prior action messages

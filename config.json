@@ -32,6 +32,7 @@
 			"article":	"the",
 			"name":		"princess",
 			"rules":	"Lose the game if you discard this card.",
+			"short_rules": "Don't lose her",
 
 			"requires_target":	false,
 			"requires_token":	false,
@@ -54,6 +55,7 @@
 			"article":	"the",
 			"name":		"countess",
 			"rules":	"If you have this card and either the king or the prince, you must discard this card.",
+			"short_rules": "Doesn't get along with king or princes",
 
 			"requires_target":	false,
 			"requires_token":	false,
@@ -76,6 +78,7 @@
 			"article":	"the",
 			"name":		"king",
 			"rules":	"Trade hands with another player.",
+			"short_rules": "Trade hands",
 
 			"requires_target":	true,
 			"requires_token":	false,
@@ -98,6 +101,7 @@
 			"article":	"a",
 			"name":		"prince",
 			"rules":	"Force another player to discard their hand and draw a new card.",
+			"short_rules": "Discard a hand",
 
 			"requires_target":	true,
 			"requires_token":	false,
@@ -120,6 +124,7 @@
 			"article":	"a",
 			"name":		"handmaid",
 			"rules":	"You will not be affected by any card played against you until your next turn.",
+			"short_rules": "Protect yourself",
 
 			"requires_target":	false,
 			"requires_token":	false,
@@ -144,6 +149,7 @@
 			"article":	"a",
 			"name":		"baron",
 			"rules":	"Compare your hand with another player.  The player with the lower hand loses.",
+			"short_rules": "Duel; lower hand loses",
 
 			"requires_target":	true,
 			"requires_token":	false,
@@ -166,6 +172,7 @@
 			"article":	"a",
 			"name":		"priest",
 			"rules":	"Look at another player's hand.",
+			"short_rules": "Look at a hand",
 
 			"requires_target":	true,
 			"requires_token":	false,
@@ -188,6 +195,7 @@
 			"article":	"a",
 			"name":		"guard",
 			"rules":	"Accuse a player of holding a card, besides guard.  If they are holding that card, they lose.",
+			"short_rules": "Hunt for a card",
 
 			"requires_target":	true,
 			"requires_token":	true,

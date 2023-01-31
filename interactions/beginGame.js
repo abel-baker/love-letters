@@ -1,6 +1,7 @@
 const { ButtonBuilder, ButtonStyle, ActionRowBuilder, EmbedBuilder } = require('discord.js');
 const inviteButtons = require('../components/invite/inviteButtonsRow');
 const menuButtons = require('../components/menuButtons');
+const announceDealEmbed = require('../components/embeds/announceDeal');
 const { Verify } = require('../utils/check');
 const wait = require('node:timers/promises').setTimeout;
 
@@ -34,11 +35,13 @@ const beginGame = {
     // Dealer
 
     await wait(500);
-    const menu = menuButtons();
-    await interaction.reply({ 
-      content: `:love_letter: Let's begin!  The dealer sets aside one card *face-down*, ${game.twoPlayerGame? `lays three cards *face-up*, ` : ``}then deals a card to each player.`,
-      components: [menu] });
+    const publicMessage = await interaction.reply({ 
+      fetchReply: true,
+      // content: `:love_letter: Let's begin!  The dealer sets aside one card *face-down*, ${game.twoPlayerGame? `lays three cards *face-up*, ` : ``}then deals a card to each player.`,
+      embeds: [announceDealEmbed(game)],
+      components: [menuButtons()] });
 
+    game.commandMessages.push(publicMessage);
 
     // await wait(500);
     // const drawButton = new ButtonBuilder()
