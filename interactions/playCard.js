@@ -1,5 +1,5 @@
 const config = require('../config.json');
-const { ButtonBuilder, ButtonStyle, ActionRowBuilder } = require('discord.js');
+const clearActionButtons = require('../utils/clearActionButtons');
 const menuButtons = require('../components/menuButtons');
 const { Cards } = require('../classes/Card');
 const wait = require('node:timers/promises').setTimeout;
@@ -23,17 +23,15 @@ const playCard = {
     const player = game.players.get(member);
 
     if (!card) {
-      const out = `${member.nickname || member.displayName} attempts to play ${cardName}`;
+      const out = `${player.name} attempts to play ${cardName}`;
       console.log(out);
       await interaction.reply({ content: out, ephemeral: true });
       return;
     }
 
-    const menu = menuButtons();
-
     const played = player.play(card)[0];
     game.discard.push(played);
-    console.log(`:love_letter: ${member.nickname || member.displayName} plays ${card.name} from`, player.hand.map(card => card.name));
+    console.log(`${player.name} plays ${card.name} from`, player.hand.map(card => card.name));
 
     const embed = {
       color: config.embed_color,
@@ -41,10 +39,12 @@ const playCard = {
 
       author: {
         name: `${member.nickname || member.displayName} plays ${played.props.article} ${played.props.value_emoji} ${played.name}.`,
-        // iconURL: interaction.user.displayAvatarURL()
+        iconURL: player.avatarURL
       },
 
-      thumbnail: { url: interaction.user.displayAvatarURL() },
+      thumbnail: { url: player.avatarURL },
+
+      description: `\u2800`,
 
       fields: [
         {
@@ -55,7 +55,7 @@ const playCard = {
 
       footer: {
         iconURL: config.bot_avatar_url,
-        text: `Next player: next-player`
+        text: `Next player: some handsome cat, probably`
       },
 
       // description: `:love_letter: **${member.nickname || member.displayName}** draws a card.`
@@ -64,10 +64,15 @@ const playCard = {
     await channel.sendTyping();
     await wait(500);
     await interaction.update({ components: [] });
-    await interaction.channel.send({
+    const publicMessage = await interaction.channel.send({
       // content: `${member.nickname || member.displayName} plays ${card.props.value_emoji} ${card.name}`,
       embeds: [embed],
-      components: [menu] });
+      components: [menuButtons()],
+      fetchReply: true
+    });
+
+    clearActionButtons(publicMessage, game);
+
 
     // const drawButton = new ButtonBuilder()
     //   .setCustomId(`drawCard`)

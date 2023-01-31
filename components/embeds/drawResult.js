@@ -21,7 +21,7 @@ const embed = (drawResult) => {
       name: `You draw ${prettyJoin(drawn.map(card => `${card.props.article} ${card.props.value_emoji} ${card.name}`))}.`,
       iconURL: player.avatarURL
     },
-    description: `:love_letter: Your hand contains ${prettyJoin(player.hand.map(card => `${card.props.article} ${card.props.value_emoji} **${card.name}**`))}.`,
+    description: `\nYour hand contains ${prettyJoin(player.hand.map(card => `${card.props.article} ${card.props.value_emoji} **${card.name}**`))}.\n\u2800`,
 
     fields: cardDescriptionFields
     // description: `:love_letter: **${player.name}** draws a card.`,

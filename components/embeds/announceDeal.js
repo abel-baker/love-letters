@@ -1,17 +1,13 @@
 const config = require('../../config.json');
 
 const embed = (game) => {
-  // const { player, deck } = game;
+  // const handsomeCat = game.guild.emojis.cache.get("1069797793738264647");
 
-  const description = `This **handsome cat** deals a card to each player`
+  const description = `\nThis **handsome cat** deals a card to each player`
    + `${game.twoPlayerGame? `, three cards face-up,` : ``}`
-   + ` and one card face-down.`
+   + ` and one card face-down.\n\u2800`
 
   const dealFields = [];
-  dealFields.push({
-    name: `:blue_square: Face-down card`,
-    value: `Could be anything`
-  });
 
   for (let card of game.faceup) {
     dealFields.push({
@@ -21,12 +17,17 @@ const embed = (game) => {
     });
   }
 
+  dealFields.push({
+    name: `:blue_square: Face-down card`,
+    value: `Could be anything, really`
+  });
+
   const out = {
     color: config.embed_color,
     thumbnail: { url: config.bot_avatar_url },
 
     author: {
-      name: `💌 Let's begin!`,
+      name: `💌 A handsome cat appears!`,
       // iconURL: config.bot_avatar_url
       // iconURL: player.avatarURL
     },

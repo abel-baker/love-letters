@@ -59,7 +59,7 @@ const drawCard = {
     // "You draw ..."
     await interaction.followUp({ 
       components, 
-      content: `Your hand contains ${prettyJoin(hand.map(card => `${card.props.article} ${card.props.value_emoji} **${card.name}**`))}.`, 
+      // content: `Your hand contains ${prettyJoin(hand.map(card => `${card.props.article} ${card.props.value_emoji} **${card.name}**`))}.`, 
       embeds: [drawResultEmbed(drawResult)],
       ephemeral: true });
     
