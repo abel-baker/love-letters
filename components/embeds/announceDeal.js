@@ -19,7 +19,7 @@ const embed = (game) => {
 
   dealFields.push({
     name: `:blue_square: Face-down card`,
-    value: `Could be anything, really`
+    value: `Could be anything, really\n\u2800`
   });
 
   const out = {

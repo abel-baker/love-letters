@@ -21,7 +21,7 @@ const embed = (handQuery) => {
       iconURL: player.avatarURL
     },
 
-    description: `\u2800\nYour hand contains ${prettyJoin(player.hand.map(card => `${card.props.article} ${card.props.value_emoji} **${card.name}**`))}.\n\u2800`,
+    description: `Your hand contains ${prettyJoin(player.hand.map(card => `${card.props.article} ${card.props.value_emoji} **${card.name}**`))}.\n\u2800`,
 
     fields: cardDescriptionFields
   }

@@ -1,6 +1,5 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { Verify } = require('../utils/check');
-const nextTurnEmbed = require('../components/nextTurnEmbed');
 const optionsButtons = require('../components/optionsButtons');
 
 module.exports = {

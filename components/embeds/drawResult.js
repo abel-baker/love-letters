@@ -18,7 +18,7 @@ const embed = (drawResult) => {
     // thumbnail: { url: interaction.user.displayAvatarURL() },
 
     author: {
-      name: `You draw ${prettyJoin(drawn.map(card => `${card.props.article} ${card.props.value_emoji} ${card.name}`))}.`,
+      name: `You draw ${prettyJoin(drawn.map(card => `${card.props.article} ${card.props.value_emoji} ${card.name}`))}`,
       iconURL: player.avatarURL
     },
     description: `\nYour hand contains ${prettyJoin(player.hand.map(card => `${card.props.article} ${card.props.value_emoji} **${card.name}**`))}.\n\u2800`,

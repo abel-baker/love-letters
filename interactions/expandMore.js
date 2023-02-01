@@ -14,10 +14,6 @@ const expandMore = {
     // Get existing buttons
     await interaction.update({ components: playButtons(hand, true) });
 
-    // await interaction.reply({ 
-    //   content: `Your hand contains  ${hand.map(card => card.props.label).join(' &  ')}.`, 
-    //   components,
-    //   ephemeral: true });
   }
 }
 
