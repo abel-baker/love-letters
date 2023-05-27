@@ -1,5 +1,5 @@
 const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
-const cardButton = require('../cardButton');
+const cardButton = require('../buttons/cardButton');
 
 // actionButtons: these are the buttons that show up when you look at your hand, they present your options
 //   such as play cards, draw or discard cards, maybe forfeit etc

@@ -1,6 +1,7 @@
 const { Verify } = require('../utils/check');
 const showHandEmbed = require('../components/embeds/showHand');
 const playButtons = require('../components/playButtons');
+const newActionButtons = require('../components/buttonRows/actionButtons');
 
 const showHand = {
   name: 'showHand',
